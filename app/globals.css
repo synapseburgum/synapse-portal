@@ -1053,6 +1053,16 @@ textarea.form-input {
   .col-md-6 { flex: 0 0 50%; max-width: 50%; }
 }
 
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hide-mobile {
+    display: inline;
+  }
+}
+
 @media (min-width: 1024px) {
   .col-lg-4 { flex: 0 0 33.333%; max-width: 33.333%; }
   .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
@@ -1136,6 +1146,10 @@ textarea.form-input {
 /* ─────────────────────────────────────────────────────────────────────────────
    CATEGORY FILTER
    ───────────────────────────────────────────────────────────────────────────── */
+
+.category-filter-wrapper {
+  margin-bottom: var(--space-4);
+}
 
 .category-filter {
   display: flex;
