@@ -1,109 +1,116 @@
 # Synapse Portal
 
-Personal dashboard and app hub. Mobile-first, Bootstrap UI, PostgreSQL backend.
+Personal dashboard and app hub with a **mobile-first Gardening app**.
 
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router)
-- **Database:** PostgreSQL + Prisma ORM
-- **UI:** Bootstrap 5 (mobile-first)
-- **API:** REST with API key auth for agent access
+- **Database:** SQLite + Prisma ORM (dev-ready, can migrate to PostgreSQL later)
+- **UI:** Custom **Synaptic design system** (OKLCH palette, dark mode, motion)
+- **Icons:** Lucide React
+- **API:** REST endpoints for UI + agent automation
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL
-
-### Setup
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Set up PostgreSQL database:
-   ```bash
-   sudo -u postgres psql -c "CREATE USER synapse WITH PASSWORD 'synapse123';"
-   sudo -u postgres psql -c "CREATE DATABASE synapse_portal OWNER synapse;"
-   sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE synapse_portal TO synapse;"
-   ```
-
-3. Run Prisma migrations:
-   ```bash
-   npm run db:push
-   ```
-
-4. Start development server:
-   ```bash
-   npm run dev
-   ```
-
-5. Open http://localhost:3000
-
-## Project Structure
-
-```
-synapse-portal/
-├── app/
-│   ├── page.tsx              # Landing page
-│   ├── gardening/            # Gardening app
-│   │   └── page.tsx
-│   └── api/                  # REST API routes
-│       ├── stats/
-│       ├── notifications/
-│       └── gardening/
-│           ├── plants/
-│           ├── tasks/
-│           └── plantings/
-├── lib/
-│   ├── db.ts                 # Prisma client
-│   └── auth.ts               # API key validation
-├── prisma/
-│   └── schema.prisma         # Database schema
-└── public/
+```bash
+npm install
+npm run db:push
+npm run db:seed
+npm run dev
 ```
 
-## API Usage
+Open: `http://localhost:3456` (or your configured local port).
 
-### Authentication
+## Gardening App Features
 
-Agent access requires API key via:
-- `Authorization: Bearer <API_KEY>` header, or
-- `X-API-Key: <API_KEY>` header
+- **Plant Library**
+  - List and filter plants by category
+  - Plant detail pages with sowing/harvest windows
+  - New plant form
+- **Seed Inventory**
+  - Track quantity, expiry, supplier, and batch code
+  - Low stock filtering
+  - Add/view seed batches
+- **Tasks (Persistent checkboxes)**
+  - One-off and recurring tasks (daily/weekly/monthly)
+  - Per-date completion tracking via `TaskCompletion`
+  - Batch completion endpoint for agent workflows
+- **Calendar**
+  - Day / Week / Month views
+  - Color-coded event types: sowing, harvest, task, transplant
+  - Aggregates data from tasks, plantings, and plant windows
+- **Plantings Lifecycle**
+  - Track status progression (`sown → germinated → transplanted → growing → ...`)
+  - Add plantings and update status from detail page
 
-Default key (change in production): `synapse-internal-key-change-in-production`
+## Key Routes
 
-### Endpoints
+### UI
+- `/gardening`
+- `/gardening/plants`
+- `/gardening/plants/new`
+- `/gardening/plants/[id]`
+- `/gardening/seeds`
+- `/gardening/seeds/new`
+- `/gardening/seeds/[id]`
+- `/gardening/tasks`
+- `/gardening/tasks/new`
+- `/gardening/calendar`
+- `/gardening/plantings`
+- `/gardening/plantings/new`
+- `/gardening/plantings/[id]`
 
-#### Stats
-- `GET /api/stats` - Get daily stats
-- `POST /api/stats` - Create/update stat (auth required)
+### API
 
-#### Notifications
-- `GET /api/notifications` - List notifications
-- `POST /api/notifications` - Create notification (auth required)
-- `PATCH /api/notifications` - Mark as read (auth required)
+#### Plants
+- `GET /api/gardening/plants`
+- `POST /api/gardening/plants` (auth)
+- `GET /api/gardening/plants/[id]`
+- `PUT /api/gardening/plants/[id]` (auth)
+- `DELETE /api/gardening/plants/[id]` (auth)
 
-#### Gardening
-- `GET /api/gardening/plants` - List plants
-- `POST /api/gardening/plants` - Create plant (auth required)
-- `GET /api/gardening/tasks` - List tasks
-- `POST /api/gardening/tasks` - Create task (auth required)
-- `PATCH /api/gardening/tasks` - Complete task (auth required)
-- `GET /api/gardening/plantings` - List plantings
-- `POST /api/gardening/plantings` - Create planting (auth required)
-- `PATCH /api/gardening/plantings` - Update planting (auth required)
+#### Seeds
+- `GET /api/gardening/seeds`
+- `POST /api/gardening/seeds` (auth)
+- `GET /api/gardening/seeds/[id]`
+- `PUT /api/gardening/seeds/[id]` (auth)
+- `DELETE /api/gardening/seeds/[id]` (auth)
 
-## Future Plans
+#### Tasks
+- `GET /api/gardening/tasks`
+- `POST /api/gardening/tasks` (auth)
+- `GET /api/gardening/tasks/[id]`
+- `PUT /api/gardening/tasks/[id]` (auth)
+- `DELETE /api/gardening/tasks/[id]` (auth)
+- `PATCH /api/gardening/tasks/[id]/complete` (UI toggle persistence)
+- `POST /api/gardening/tasks/batch-complete` (auth)
 
-- [ ] MCP server for agent integration
-- [ ] Calendar view for gardening
-- [ ] Analytics dashboard
-- [ ] Agent activity monitor
-- [ ] Public hosting at synapse.co.uk
+#### Plantings
+- `GET /api/gardening/plantings`
+- `POST /api/gardening/plantings` (auth)
+- `GET /api/gardening/plantings/[id]`
+- `PUT /api/gardening/plantings/[id]` (auth)
+- `DELETE /api/gardening/plantings/[id]` (auth)
 
-## License
+#### Calendar
+- `GET /api/gardening/calendar?from=ISO&to=ISO&view=day|week|month`
 
-MIT
+## Database Seeding
+
+`npm run db:seed` adds:
+- 20 common UK vegetables
+- 10 common herbs
+
+## Scripts
+
+- `npm run dev`
+- `npm run build`
+- `npm run db:push`
+- `npm run db:seed`
+- `npm run db:studio`
+
+## Notes
+
+- The UI is designed for small screens first (375px+).
+- Dark mode is supported with `prefers-color-scheme`.
+- Agent auth uses API keys via `Authorization: Bearer <key>` or `X-API-Key`.

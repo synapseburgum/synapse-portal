@@ -1,4 +1,4 @@
-import { Plus, Search } from 'lucide-react'
+import { Plus, Sprout } from 'lucide-react'
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import PlantCard from '@/components/gardening/PlantCard'
@@ -71,7 +71,9 @@ export default async function PlantsPage({
           <div className="card">
             <div className="card-body">
               <div className="empty-state">
-                <div className="empty-state-icon">🌱</div>
+                <div className="empty-state-icon">
+                  <Sprout />
+                </div>
                 <p className="empty-state-text">
                   {category === 'all' 
                     ? 'No plants yet. Add your first plant to get started.'

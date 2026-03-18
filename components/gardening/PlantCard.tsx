@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Flower2, Leaf, Sprout, Apple, type LucideIcon } from 'lucide-react'
+import type { ComponentType } from 'react'
 
 interface PlantCardProps {
   id: string
@@ -15,11 +16,11 @@ interface PlantCardProps {
   imageUrl?: string | null
 }
 
-const categoryIcons: Record<string, string> = {
-  vegetable: '🥬',
-  herb: '🌿',
-  flower: '🌸',
-  fruit: '🍓',
+const categoryIcons: Record<string, ComponentType<{ size?: number }>> = {
+  vegetable: Sprout,
+  herb: Leaf,
+  flower: Flower2,
+  fruit: Apple,
 }
 
 const monthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -31,7 +32,7 @@ function getSowingWindow(plant: PlantCardProps): string | null {
   const outdoor = plant.sowOutdoorStart && plant.sowOutdoorEnd
     ? `${monthNames[plant.sowOutdoorStart]}-${monthNames[plant.sowOutdoorEnd]}`
     : null
-  
+
   if (indoor && outdoor) return `Indoor: ${indoor} • Outdoor: ${outdoor}`
   if (indoor) return `Sow indoors: ${indoor}`
   if (outdoor) return `Sow outdoors: ${outdoor}`
@@ -49,26 +50,25 @@ export default function PlantCard({
   sowOutdoorEnd,
   imageUrl,
 }: PlantCardProps) {
-  const sowingWindow = getSowingWindow({ 
-    id, name, variety, category, 
-    sowIndoorStart, sowIndoorEnd, sowOutdoorStart, sowOutdoorEnd, imageUrl 
+  const sowingWindow = getSowingWindow({
+    id, name, variety, category,
+    sowIndoorStart, sowIndoorEnd, sowOutdoorStart, sowOutdoorEnd, imageUrl,
   })
+
+  const Icon = categoryIcons[category] || Sprout
 
   return (
     <Link href={`/gardening/plants/${id}`} className="app-card">
-      <div 
-        className="app-icon"
-        style={{ 
-          background: imageUrl ? `url(${imageUrl}) center/cover` : 'var(--success-subtle)',
-          color: 'var(--success)'
-        }}
+      <div
+        className="app-icon success"
+        style={{ background: imageUrl ? `url(${imageUrl}) center/cover` : undefined }}
       >
-        {imageUrl ? '' : categoryIcons[category] || '🌱'}
+        {imageUrl ? null : <Icon size={20} />}
       </div>
       <div className="app-content">
         <div className="app-title">
           {name}
-          {variety && <span style={{ color: 'var(--text-tertiary)', fontWeight: 400 }}> • {variety}</span>}
+          {variety ? <span style={{ color: 'var(--text-tertiary)', fontWeight: 400 }}> • {variety}</span> : null}
         </div>
         <div className="app-description">
           {sowingWindow || 'No sowing info'}
