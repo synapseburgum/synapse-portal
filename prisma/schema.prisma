@@ -1,12 +1,13 @@
 // Prisma schema for Synapse Portal
 // Supports: Landing stats, Gardening app, extensible for future apps
+// SQLite for dev, migrate to PostgreSQL for production
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -19,7 +20,7 @@ model ApiKey {
   id        String   @id @default(uuid())
   name      String   @unique // e.g., "racer-agent", "clark-agent"
   key       String   @unique // The actual API key
-  scopes    String[] // Permissions: ["read", "write", "admin"]
+  scopes    String   // JSON array: ["read", "write", "admin"]
   lastUsed  DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -29,28 +30,26 @@ model ApiKey {
 /// Daily stats for landing page
 model DailyStat {
   id        String   @id @default(uuid())
-  date      DateTime @unique @db.Date
+  date      DateTime // SQLite stores as ISO string
   key       String   // e.g., "emails_processed", "bets_placed", "tasks_completed"
   value     Float
-  metadata  Json?    // Additional context
+  metadata  String?  // JSON string for additional context
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([date, key])
+  @@unique([date, key])
 }
 
 /// Notifications for landing page
 model Notification {
-  id        String   @id @default(uuid())
-  type      String   // "info", "warning", "success", "error"
-  title     String
-  message   String
-  source    String?  // Which app/source generated this
-  isRead    Boolean  @default(false)
-  isArchived Boolean @default(false)
-  createdAt DateTime @default(now())
-  
-  @@index([isRead, createdAt])
+  id         String   @id @default(uuid())
+  type       String   // "info", "warning", "success", "error"
+  title      String
+  message    String
+  source     String?  // Which app/source generated this
+  isRead     Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 // ============================================================================
@@ -58,107 +57,68 @@ model Notification {
 // ============================================================================
 
 model GardenPlant {
-  id            String   @id @default(uuid())
-  name          String
-  variety       String?
-  category      String   // "vegetable", "herb", "flower", "fruit"
-  description   String?
-  sowIndoorStart Month?  // Earliest month to sow indoors (1-12)
-  sowIndoorEnd   Month?  // Latest month to sow indoors
-  sowOutdoorStart Month? // Earliest month to sow outdoors
-  sowOutdoorEnd   Month? // Latest month to sow outdoors
-  harvestStart   Month?  // Earliest harvest month
-  harvestEnd     Month?  // Latest harvest month
+  id              String   @id @default(uuid())
+  name            String
+  variety         String?
+  category        String   // "vegetable", "herb", "flower", "fruit"
+  description     String?
+  sowIndoorStart  Int?     // 1-12 for month
+  sowIndoorEnd    Int?
+  sowOutdoorStart Int?
+  sowOutdoorEnd   Int?
+  harvestStart    Int?
+  harvestEnd      Int?
   daysToGerminate Int?
   daysToHarvest   Int?
   spacingCm       Int?
   depthCm         Float?
-  notes          String?
-  imageUrl       String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  notes           String?
+  imageUrl        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   
   plantings     GardenPlanting[]
   seedInventory SeedInventory[]
-
-  @@index([category])
 }
 
 model GardenPlanting {
-  id          String   @id @default(uuid())
-  plantId     String
-  plant       GardenPlant @relation(fields: [plantId], references: [id])
-  location    String?  // "greenhouse", "bed-1", "pot-balcony"
-  sowDate     DateTime @db.Date
-  transplantDate DateTime? @db.Date
-  expectedHarvestDate DateTime? @db.Date
-  actualHarvestDate DateTime? @db.Date
-  quantity    Int?
-  status      PlantingStatus @default(sown)
-  notes       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([sowDate])
-  @@index([status])
+  id                  String   @id @default(uuid())
+  plantId             String
+  plant               GardenPlant @relation(fields: [plantId], references: [id])
+  location            String?  // "greenhouse", "bed-1", "pot-balcony"
+  sowDate             DateTime
+  transplantDate      DateTime?
+  expectedHarvestDate DateTime?
+  actualHarvestDate   DateTime?
+  quantity            Int?
+  status              String   @default("sown") // sown, germinated, transplanted, growing, flowering, fruiting, harvested, failed
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model SeedInventory {
-  id          String   @id @default(uuid())
-  plantId     String
-  plant       GardenPlant @relation(fields: [plantId], references: [id])
-  quantity    Int      // Number of seeds
-  purchasedDate DateTime? @db.Date
-  expiryDate  DateTime? @db.Date
-  supplier    String?
-  batchCode   String?
-  notes       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([expiryDate])
+  id            String   @id @default(uuid())
+  plantId       String
+  plant         GardenPlant @relation(fields: [plantId], references: [id])
+  quantity      Int      // Number of seeds
+  purchasedDate DateTime?
+  expiryDate    DateTime?
+  supplier      String?
+  batchCode     String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model GardenTask {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String?
-  dueDate     DateTime @db.Date
-  completed   Boolean  @default(false)
+  dueDate     DateTime
+  completed   Boolean   @default(false)
   completedAt DateTime?
-  recurring   String?  // "daily", "weekly", "monthly", null = one-off
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([dueDate, completed])
-}
-
-// ============================================================================
-// Enums
-// ============================================================================
-
-enum Month {
-  january
-  february
-  march
-  april
-  may
-  june
-  july
-  august
-  september
-  october
-  november
-  december
-}
-
-enum PlantingStatus {
-  sown
-  germinated
-  transplanted
-  growing
-  flowering
-  fruiting
-  harvested
-  failed
+  recurring   String?   // "daily", "weekly", "monthly", null = one-off
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
