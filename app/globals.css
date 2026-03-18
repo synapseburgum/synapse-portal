@@ -831,6 +831,38 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   FORMS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.form-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid oklch(0.18 0.015 270 / 0.14);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font: inherit;
+  transition:
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    EMPTY STATES
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -1028,3 +1060,121 @@ p {
 
 .g-3 { gap: var(--space-3); }
 .g-4 { gap: var(--space-4); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   GARDENING SUB-NAVIGATION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.gardening-nav {
+  background: var(--bg-elevated);
+  border-bottom: 1px solid oklch(0.18 0.015 270 / 0.06);
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 50;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gardening-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.gardening-nav-inner {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+}
+
+.gardening-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--radius-md);
+  transition: 
+    color var(--duration-fast) var(--ease-out-expo),
+    background var(--duration-fast) var(--ease-out-expo);
+}
+
+.gardening-nav-link:hover {
+  color: var(--text-primary);
+  background: var(--accent-subtle);
+}
+
+.gardening-nav-link.active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.gardening-nav-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .gardening-nav-link span {
+    display: none;
+  }
+  
+  .gardening-nav-link {
+    padding: var(--space-2);
+  }
+  
+  .gardening-nav-link svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CATEGORY FILTER
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.category-filter {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: var(--space-1) 0;
+}
+
+.category-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.category-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid oklch(0.18 0.015 270 / 0.08);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 
+    color var(--duration-fast) var(--ease-out-expo),
+    background var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.category-filter-btn:hover {
+  color: var(--text-primary);
+  border-color: oklch(0.18 0.015 270 / 0.15);
+}
+
+.category-filter-btn.active {
+  color: white;
+  background: var(--accent);
+  border-color: var(--accent);
+}
