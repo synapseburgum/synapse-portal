@@ -176,7 +176,6 @@ export default async function GardeningPage() {
                           <div className="list-item-title">{task.title}</div>
                           <div className="list-item-meta">
                             {task.dueDate.toLocaleDateString()}
-                            {task.location && ` • ${task.location}`}
                           </div>
                         </div>
                         <span className="badge muted">{task.recurring || 'once'}</span>
