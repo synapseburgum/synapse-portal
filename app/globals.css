@@ -831,6 +831,83 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   TASKS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid oklch(0.18 0.015 270 / 0.06);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.task-item-content {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.task-item-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.task-item-title.done {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-item-meta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.task-checkbox {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 7px;
+  border: 1px solid oklch(0.18 0.015 270 / 0.2);
+  background: var(--bg-elevated);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.task-checkbox:hover {
+  border-color: var(--accent);
+}
+
+.task-checkbox:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-glow);
+}
+
+.task-checkbox.checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.task-checkbox:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    FORMS
    ───────────────────────────────────────────────────────────────────────────── */
 
