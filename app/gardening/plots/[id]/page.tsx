@@ -30,13 +30,15 @@ export default function PlotDetailPage() {
   const [viewMode, setViewMode] = useState<'canvas' | 'list'>('canvas')
   
   const fetchPlot = useCallback(async () => {
+    setLoading(true)
+    setError(null)
     try {
       const response = await fetch(`/api/gardening/plots/${plotId}`)
       if (!response.ok) {
         if (response.status === 404) {
           setError('Plot not found')
         } else {
-          setError('Failed to load plot')
+          setError('Failed to load plot. Please try again.')
         }
         return
       }
@@ -44,8 +46,7 @@ export default function PlotDetailPage() {
       const data = await response.json()
       setPlot(data.plot)
     } catch (err) {
-      console.error('Failed to fetch plot:', err)
-      setError('Failed to load plot')
+      setError('Failed to load plot. Check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -81,8 +82,8 @@ export default function PlotDetailPage() {
         } : prev)
         setSelectedBedId(data.bed.id)
       }
-    } catch (err) {
-      console.error('Failed to add bed:', err)
+    } catch {
+      // Error adding bed - user can retry
     }
   }
   
@@ -112,8 +113,8 @@ export default function PlotDetailPage() {
         // Revert on error
         fetchPlot()
       }
-    } catch (err) {
-      console.error('Failed to update bed:', err)
+    } catch {
+      // Revert on error
       fetchPlot()
     }
   }
@@ -137,8 +138,8 @@ export default function PlotDetailPage() {
         })
         setSelectedBedId(null)
       }
-    } catch (err) {
-      console.error('Failed to delete bed:', err)
+    } catch {
+      // Error deleting bed - user can retry
     }
   }
   

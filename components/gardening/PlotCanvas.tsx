@@ -325,6 +325,22 @@ export default function PlotCanvas({
           <span>Snap to Grid</span>
         </label>
       </div>
+
+      {/* Status Legend */}
+      <div className="plot-legend">
+        <span className="plot-legend-title">Planting Status:</span>
+        <div className="plot-legend-items">
+          {Object.entries(STATUS_COLORS).map(([key, config]) => (
+            <div key={key} className="plot-legend-item">
+              <span
+                className="plot-legend-dot"
+                style={{ backgroundColor: config.fill, borderColor: config.stroke }}
+              />
+              <span className="plot-legend-label">{config.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
       
       {/* Canvas */}
       <div className="plot-canvas-container">
@@ -539,6 +555,46 @@ export default function PlotCanvas({
           width: 16px;
           height: 16px;
           accent-color: var(--accent);
+        }
+        
+        .plot-legend {
+          display: flex;
+          align-items: center;
+          gap: var(--space-3);
+          flex-wrap: wrap;
+          padding: var(--space-2) var(--space-3);
+          background: var(--bg-sunken);
+          border-radius: var(--radius-md);
+          font-size: var(--text-xs);
+        }
+        
+        .plot-legend-title {
+          color: var(--text-muted);
+          font-weight: 600;
+        }
+        
+        .plot-legend-items {
+          display: flex;
+          gap: var(--space-3);
+          flex-wrap: wrap;
+        }
+        
+        .plot-legend-item {
+          display: flex;
+          align-items: center;
+          gap: var(--space-1);
+        }
+        
+        .plot-legend-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          border-width: 2px;
+          border-style: solid;
+        }
+        
+        .plot-legend-label {
+          color: var(--text-secondary);
         }
         
         .plot-canvas-container {

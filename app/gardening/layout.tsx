@@ -1,13 +1,14 @@
 import Link from 'next/link'
-import { Sprout, Package, CheckSquare, Calendar, Leaf, Trees } from 'lucide-react'
+import { Sprout, Package, CheckSquare, Calendar, Leaf, Trees, MapPin } from 'lucide-react'
 
 const navItems = [
   { href: '/gardening', label: 'Overview', icon: Leaf },
   { href: '/gardening/plants', label: 'Plants', icon: Sprout },
   { href: '/gardening/seeds', label: 'Seeds', icon: Package },
+  { href: '/gardening/plots', label: 'Plots', icon: MapPin },
+  { href: '/gardening/plantings', label: 'Plantings', icon: Trees },
   { href: '/gardening/tasks', label: 'Tasks', icon: CheckSquare },
   { href: '/gardening/calendar', label: 'Calendar', icon: Calendar },
-  { href: '/gardening/plantings', label: 'Plantings', icon: Trees },
 ]
 
 export default function GardeningLayout({

@@ -51,8 +51,8 @@ export default function HorizonCard({ item }: { item: PriorityItem }) {
         setIsCompleted(true)
         setShowActions(false)
       }
-    } catch (error) {
-      console.error('Failed to complete:', error)
+    } catch {
+      // Failed to complete - user can retry
     } finally {
       setIsCompleting(false)
     }
@@ -81,8 +81,8 @@ export default function HorizonCard({ item }: { item: PriorityItem }) {
           setSnoozeMessage('')
         }, 3000)
       }
-    } catch (error) {
-      console.error('Failed to snooze:', error)
+    } catch {
+      // Failed to snooze - user can retry
     } finally {
       setIsSnoozing(false)
     }
