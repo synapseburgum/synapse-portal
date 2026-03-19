@@ -137,6 +137,56 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 04:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a new **Garden Weather** feature optimized for fast mobile decision-making.
+- Added new page: **`/weather`** (mobile-first weather summary + gardening recommendation).
+- Added new API endpoint: **`GET /api/weather/current`**.
+- Added shared weather utility: **`lib/weather.ts`** using Open-Meteo with 15-minute revalidation.
+- Integrated weather discovery into portal navigation and home dashboard:
+  - New **Weather** item in top/mobile nav.
+  - New **Garden Weather** app card on dashboard (`/`).
+
+### Why this was selected
+- Tim actively uses the gardening workflows and needed practical, immediate context for what outdoor work is sensible **right now**.
+- Weather directly improves decisions across existing tasks/plantings without adding complexity.
+- It is high-value during early-morning checks and overnight sprint output review.
+
+### Mobile-first behavior delivered
+- Compact hero card surfaces key weather at a glance (temp/feels-like/condition).
+- 12-hour precipitation + wind readout tuned for quick thumb-scanning.
+- Recommendation badge and summary designed for single-screen consumption on small devices.
+- Navigation access works through the existing responsive menu flow.
+
+### Weather logic delivered
+- Pulls current conditions + hourly forecast from Open-Meteo.
+- Computes:
+  - current temperature and feels-like,
+  - wind speed now,
+  - total precipitation next 12 hours,
+  - max wind next 12 hours.
+- Produces practical recommendation tiers:
+  - **good** (sowing/transplanting suitable),
+  - **ok** (routine checks, avoid fragile moves),
+  - **poor** (focus covered tasks).
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Runtime smoke checks passed on production server (`npm run start -p 3481`):
+  - `/weather`
+  - `/api/weather/current`
+  - dashboard includes **Garden Weather** card
+  - nav includes **Weather** route + active state
+- Confirmed API JSON shape and recommendation fields via `curl + jq`.
+
+### Notes
+- Browser automation remained unavailable due OpenClaw gateway/Chrome CDP failures; testing was completed via build + runtime HTTP validation.
+- Existing `:3456` service was checked and confirmed reachable, but serving an older build (`/brief` and `/weather` returned 404 there).
+- No betting/gambling/Racer functionality added.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists
