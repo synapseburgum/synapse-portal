@@ -16,6 +16,42 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 01:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a new **Agent Status Monitor** feature focused on Tim’s real multi-agent workflow.
+- Added new page: **`/agents`** (mobile-first layout + auto-refresh + manual refresh).
+- Added new API endpoint: **`GET /api/agents/status`**.
+- Added shared server utility: **`lib/agents.ts`** for reusable status aggregation.
+- Integrated Agent Monitor into dashboard:
+  - New app card on home screen (`/`)
+  - “Open full monitor” CTA in home agent panel
+  - Top nav now includes **Agents**
+
+### Mobile-first behavior delivered
+- Stats and status cards remain readable on small screens.
+- Message previews clamp to 2 lines to avoid overflow.
+- Single-column hero behavior on narrow devices.
+- Refresh control is touch-friendly and visible at top of page.
+
+### Status logic
+- **Active**: last event ≤ 20 minutes
+- **Idle**: 20 minutes to 3 hours
+- **Offline**: > 3 hours or no events
+- Tracks: `main`, `clark`, `scout`, `marketing`, `dev`, `ops`, `reviewer`, `workspace`, `terminal`
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Endpoint smoke test: `/api/agents/status` returns expected JSON schema.
+- Seeded-data verification done to confirm active/idle/offline transitions.
+- HTML response checks confirmed `/agents` route and new nav/app links render.
+
+### Notes
+- Browser automation tool was unavailable during this run (gateway timeout), so validation was performed with build + HTTP checks instead.
+- No betting/gambling/Racer features were added.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists

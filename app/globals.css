@@ -1104,6 +1104,104 @@ textarea.form-input {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   AGENT STATUS + QUICK LINKS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.agent-status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border: 1px solid oklch(0.18 0.015 270 / 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--bg-elevated);
+}
+
+.agent-status-item-monitor {
+  align-items: flex-start;
+}
+
+.agent-status-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.agent-name {
+  font-size: var(--text-sm);
+  text-transform: capitalize;
+  line-height: 1.2;
+}
+
+.agent-last-seen {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.agent-message-preview {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 50ch;
+}
+
+.quick-links-stack {
+  margin-top: var(--space-2);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.quick-link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border: 1px solid oklch(0.18 0.015 270 / 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+
+.quick-link-row:hover {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+.quick-link-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.quick-link-title,
+.quick-link-description {
+  display: block;
+  line-height: 1.2;
+}
+
+.quick-link-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.quick-link-description {
+  margin-top: 3px;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    EMPTY STATES
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -1186,6 +1284,15 @@ textarea.form-input {
     gap: var(--space-2);
     text-align: center;
   }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -1381,6 +1488,16 @@ textarea.form-input {
   .gardening-nav-link svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .agent-monitor-stats-grid .stat-card.hero {
+    grid-column: span 1;
+  }
+
+  .agent-message-preview {
+    max-width: 100%;
   }
 }
 
