@@ -1,61 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { validateApiKey } from '@/lib/auth'
+import { saveBrief, validateBriefPayload } from '@/lib/briefStorage'
 
-// POST /api/brief - create/update brief (auth required)
-export async function POST(request: NextRequest) {
-  const auth = validateApiKey(request)
-  if (!auth.authorized) {
-    return NextResponse.json({ error: auth.error }, { status: 401 })
-  }
+function isAuthorized(request: NextRequest) {
+  const bearer = request.headers.get('authorization')
+  const xApiKey = request.headers.get('x-api-key')
+  const expected = process.env.BRIEF_API_KEY || process.env.PORTAL_API_KEY || ''
 
-  try {
-    const body = await request.json()
-    const date = new Date(body.date)
-    date.setHours(0, 0, 0, 0)
+  const token = bearer?.startsWith('Bearer ') ? bearer.slice(7).trim() : null
+  const provided = token || xApiKey || ''
 
-    const brief = await prisma.dailyBrief.upsert({
-      where: { date },
-      update: {
-        tldr: body.tldr,
-        content: body.content,
-        audioUrl: body.audioUrl || null,
-        isRead: body.isRead ?? false,
-        isPinned: body.isPinned ?? false,
-      },
-      create: {
-        date,
-        tldr: body.tldr,
-        content: body.content,
-        audioUrl: body.audioUrl || null,
-        isRead: body.isRead ?? false,
-        isPinned: body.isPinned ?? false,
-      },
-    })
+  const host = request.headers.get('host') || ''
+  const forwardedFor = request.headers.get('x-forwarded-for') || ''
+  const localhostHost = host.startsWith('localhost:') || host.startsWith('127.0.0.1:')
+  const localhostForwarded = forwardedFor.includes('127.0.0.1') || forwardedFor.includes('::1')
 
-    return NextResponse.json({ ok: true, data: brief })
-  } catch {
-    return NextResponse.json({ ok: false, error: 'Failed to create/update brief' }, { status: 500 })
-  }
+  if (expected) return provided === expected
+  return localhostHost || localhostForwarded
 }
 
-// PATCH /api/brief - quick read/pin toggles
-export async function PATCH(request: NextRequest) {
+// POST /api/brief
+// Stores one brief file per day at /data/briefs/YYYY-MM-DD.json
+export async function POST(request: NextRequest) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
-    const body = await request.json()
-    const id = String(body.id || '')
-    if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 })
+    const payload = await request.json()
+    const validated = validateBriefPayload(payload)
 
-    const updated = await prisma.dailyBrief.update({
-      where: { id },
-      data: {
-        ...(typeof body.isRead === 'boolean' ? { isRead: body.isRead } : {}),
-        ...(typeof body.isPinned === 'boolean' ? { isPinned: body.isPinned } : {}),
-      },
-    })
+    if (!validated.ok) {
+      return NextResponse.json({ success: false, error: validated.error }, { status: 400 })
+    }
 
-    return NextResponse.json({ ok: true, data: updated })
+    const savedPath = await saveBrief(validated.data)
+    return NextResponse.json({ success: true, path: savedPath })
   } catch {
-    return NextResponse.json({ ok: false, error: 'Failed to update brief flags' }, { status: 500 })
+    return NextResponse.json({ success: false, error: 'Failed to store brief' }, { status: 500 })
   }
 }

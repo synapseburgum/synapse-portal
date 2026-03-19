@@ -114,13 +114,24 @@ Open: `http://localhost:3456` (or your configured local port).
 #### Calendar
 - `GET /api/gardening/calendar?from=ISO&to=ISO&view=day|week|month`
 
-#### Brief
-- `GET /api/brief/daily` - today's brief (auto-generated if absent)
-- `GET /api/brief/archive?from=YYYY-MM-DD&to=YYYY-MM-DD` - archive range
-- `GET /api/brief/[date]` - specific brief by date
-- `POST /api/brief` - create/update brief (auth)
-- `PATCH /api/brief` - update read/pin flags
-- `GET /api/brief/search?q=query` - search tldr/content
+#### Brief pipeline (file-based)
+- `POST /api/brief` - store daily brief JSON into `data/briefs/YYYY-MM-DD.json`
+- `GET /api/brief/today` - return today's brief (or most recent)
+- `GET /api/brief/list` - list available briefs (date + title)
+
+Auth for `POST /api/brief`:
+- Preferred: set `BRIEF_API_KEY` and send either:
+  - `Authorization: Bearer <BRIEF_API_KEY>`
+  - `X-API-Key: <BRIEF_API_KEY>`
+- Fallback (if no key configured): localhost-only host check.
+
+Clark integration (recommended):
+```bash
+curl -X POST http://localhost:3456/api/brief \
+  -H 'content-type: application/json' \
+  -H "authorization: Bearer $BRIEF_API_KEY" \
+  -d @daily-brief.json
+```
 
 #### Today
 - `GET /api/today/summary` - morning command-center payload (tasks, agents, weather, Telegram draft)
