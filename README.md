@@ -75,6 +75,7 @@ Open: `http://localhost:3456` (or your configured local port).
 - `/gardening/plantings/[id]`
 - `/weather`
 - `/inbox`
+- `/today`
 
 > Agent monitor pages were removed. Use CNS directly: `http://localhost:3477`
 
@@ -120,6 +121,9 @@ Open: `http://localhost:3456` (or your configured local port).
 - `POST /api/brief` - create/update brief (auth)
 - `PATCH /api/brief` - update read/pin flags
 - `GET /api/brief/search?q=query` - search tldr/content
+
+#### Today
+- `GET /api/today/summary` - morning command-center payload (tasks, agents, weather, Telegram draft)
 
 ## Database Seeding
 

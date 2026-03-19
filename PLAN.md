@@ -279,6 +279,44 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 07:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a new **Today command center** for Tim’s morning mobile triage.
+- Added new page: **`/today`** with priority queue, one-tap actions, weather check, and Telegram-ready snapshot.
+- Added new API endpoint: **`GET /api/today/summary`**.
+- Added shared server utility: **`lib/today.ts`** to aggregate tasks, agent health, notifications, weather, and brief context.
+- Added client component: **`components/today/TelegramDraftCard.tsx`** for one-tap copy + Telegram open flow.
+- Integrated discovery into existing navigation and dashboard:
+  - New **Today** route in top/mobile nav.
+  - New **Today** app card on dashboard (`/`).
+  - New **Open Today View** quick action on dashboard.
+
+### Why this was selected
+- Most useful next improvement for Tim was a **single phone-first screen** for immediate morning decisions.
+- Tim’s workflow spans Telegram, gardening tasks, and multi-agent operations; this feature reduces context switching and speeds first-10-minute triage.
+
+### Mobile-first behavior delivered
+- Priority-first card layout with compact, thumb-friendly action rows.
+- Critical indicators surfaced at top (overdue, due today, offline agents, unread alerts).
+- One-tap copy for Telegram-ready morning snapshot.
+- Single-column responsive actions on small screens.
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Runtime checks passed on fresh production server (`npm run start -p 3490`):
+  - `/today`
+  - `/api/today/summary`
+  - home nav/card/quick-action links route to `/today`
+  - existing key routes (`/brief`, `/agents`, `/weather`, `/inbox`, `/gardening/tasks`) remain healthy
+- API payload contract checks passed (counts, priorities, telegramDraft structure).
+
+### Notes
+- Browser automation tool remained unavailable due gateway timeout, so validation used build + runtime HTTP/API checks.
+- No betting/gambling/Racer functionality added.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists

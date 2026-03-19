@@ -13,6 +13,7 @@ import {
   Package,
   Gauge,
   Bot,
+  SunMedium,
 } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import { getAgentHealthCounts, getAgentStatuses } from '@/lib/agents'
@@ -164,6 +165,18 @@ export default async function HomePage() {
               <ChevronRight />
             </span>
           </Link>
+          <Link href="/today" className="app-card">
+            <div className="app-icon info">
+              <SunMedium />
+            </div>
+            <div className="app-content">
+              <div className="app-title">Today</div>
+              <div className="app-description">Morning priorities + Telegram-ready snapshot</div>
+            </div>
+            <span className="app-arrow">
+              <ChevronRight />
+            </span>
+          </Link>
           <Link href="/agents" className="app-card">
             <div className="app-icon secondary">
               <Bot />
@@ -226,6 +239,10 @@ export default async function HomePage() {
                 <Link href="/gardening/tasks/new" className="btn btn-success">
                   <Plus />
                   Add Garden Task
+                </Link>
+                <Link href="/today" className="btn btn-outline">
+                  <SunMedium />
+                  Open Today View
                 </Link>
                 <Link href="/agents" className="btn btn-outline">
                   <Bot />

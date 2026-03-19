@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, Leaf, Newspaper, CloudSun, Inbox, Menu, X, Gauge, Bot } from 'lucide-react'
+import { LayoutDashboard, Leaf, Newspaper, CloudSun, Inbox, Menu, X, Gauge, Bot, SunMedium } from 'lucide-react'
 
 const NAV_ITEMS = [
   {
@@ -16,6 +16,12 @@ const NAV_ITEMS = [
     href: '/gardening',
     label: 'Gardening',
     Icon: Leaf,
+    external: false,
+  },
+  {
+    href: '/today',
+    label: 'Today',
+    Icon: SunMedium,
     external: false,
   },
   {

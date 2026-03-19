@@ -607,6 +607,8 @@ p {
 .app-card:nth-child(4) { animation-delay: 250ms; }
 .app-card:nth-child(5) { animation-delay: 300ms; }
 .app-card:nth-child(6) { animation-delay: 350ms; }
+.app-card:nth-child(7) { animation-delay: 400ms; }
+.app-card:nth-child(8) { animation-delay: 450ms; }
 
 .app-card:hover {
   border-color: var(--accent);
@@ -1905,6 +1907,78 @@ textarea.form-input {
 
 @media (max-width: 640px) {
   .quick-capture-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TODAY VIEW
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.today-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.today-action-card {
+  border: 1px solid oklch(0.18 0.015 270 / 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.today-action-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+.today-action-card strong {
+  display: block;
+  line-height: 1.2;
+  font-size: var(--text-sm);
+}
+
+.today-action-card small {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.today-action-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.today-draft-box {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  border: 1px solid oklch(0.18 0.015 270 / 0.12);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  padding: var(--space-3);
+  max-height: 320px;
+  overflow: auto;
+}
+
+@media (max-width: 640px) {
+  .today-action-grid {
     grid-template-columns: 1fr;
   }
 }
