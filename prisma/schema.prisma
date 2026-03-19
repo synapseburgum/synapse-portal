@@ -94,11 +94,47 @@ model GardenPlant {
   seedInventory SeedInventory[]
 }
 
+/// Garden plot - a physical growing area (e.g., "Back Garden", "Allotment Plot 5")
+model GardenPlot {
+  id        String   @id @default(uuid())
+  name      String
+  width     Float    // meters
+  height    Float    // meters
+  location  String?  // "backyard", "allotment", "balcony", etc.
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  beds Bed[]
+}
+
+/// Bed/Zone within a plot - a distinct growing area with specific soil/conditions
+model Bed {
+  id        String   @id @default(uuid())
+  plotId    String
+  plot      GardenPlot @relation(fields: [plotId], references: [id], onDelete: Cascade)
+  name      String   // "Bed 1", "Herb Zone", "Tomato Patch"
+  x         Float    // position within plot (meters from top-left)
+  y         Float
+  width     Float    // dimensions (meters)
+  height    Float
+  soilType  String?  // "clay", "sandy", "loam", "compost-rich", etc.
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  plantings GardenPlanting[]
+}
+
 model GardenPlanting {
   id                  String   @id @default(uuid())
   plantId             String
   plant               GardenPlant @relation(fields: [plantId], references: [id])
-  location            String?  // "greenhouse", "bed-1", "pot-balcony"
+  bedId               String?
+  bed                 Bed? @relation(fields: [bedId], references: [id], onDelete: SetNull)
+  location            String?  // "greenhouse", "bed-1", "pot-balcony" (legacy field, prefer bedId)
+  positionX           Float?   // position within bed (meters from top-left)
+  positionY           Float?
   sowDate             DateTime
   transplantDate      DateTime?
   expectedHarvestDate DateTime?

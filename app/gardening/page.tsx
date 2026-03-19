@@ -10,6 +10,7 @@ import {
   Leaf,
   AlertTriangle,
   Clock,
+  Map,
 } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import GardeningDashboardClient from '@/components/gardening/GardeningDashboardClient'
@@ -231,6 +232,18 @@ export default async function GardeningPage() {
           <h2 className="section-title">Quick Access</h2>
         </div>
         <div className="apps-grid">
+          <Link href="/gardening/plots" className="app-card">
+            <div className="app-icon secondary">
+              <Map />
+            </div>
+            <div className="app-content">
+              <div className="app-title">Plots</div>
+              <div className="app-description">Garden layout & beds</div>
+            </div>
+            <span className="app-arrow">
+              <ChevronRight />
+            </span>
+          </Link>
           <Link href="/gardening/plants" className="app-card">
             <div className="app-icon success">
               <Sprout />
