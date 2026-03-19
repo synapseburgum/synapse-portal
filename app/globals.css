@@ -1656,12 +1656,36 @@ textarea.form-input {
   border: 1px solid oklch(0.18 0.015 270 / 0.1);
   border-radius: var(--radius-md);
   background: var(--bg-elevated);
-  padding: var(--space-4);
+  overflow: hidden;
 }
 
 .brief-section-title {
   font-size: var(--text-base);
   margin-bottom: var(--space-2);
+}
+
+.brief-section-toggle {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+}
+
+.brief-section-toggle:hover {
+  background: var(--accent-subtle);
+}
+
+.brief-section-toggle-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.brief-section-content {
+  padding: 0 var(--space-4) var(--space-4) var(--space-4);
 }
 
 .brief-search-grid {

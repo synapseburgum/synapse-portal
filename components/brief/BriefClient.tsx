@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { CalendarDays, ExternalLink, RefreshCcw } from 'lucide-react'
+import { CalendarDays, ChevronDown, ChevronRight, ExternalLink, RefreshCcw } from 'lucide-react'
 
 type BriefSection = { title: string; content: string }
 type BriefSource = { title: string; url: string }
@@ -26,6 +26,7 @@ export default function BriefClient() {
   const [archive, setArchive] = useState<BriefListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0]))
 
   async function load() {
     setLoading(true)
@@ -44,8 +45,10 @@ export default function BriefClient() {
         throw new Error('Failed to fetch brief data')
       }
 
-      setBrief(todayJson?.brief || null)
+      const nextBrief = (todayJson?.brief || null) as Brief | null
+      setBrief(nextBrief)
       setArchive(Array.isArray(listJson?.briefs) ? listJson.briefs : [])
+      setExpandedSections(new Set(nextBrief && nextBrief.sections.length > 0 ? [0] : []))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load brief')
       setBrief(null)
@@ -58,6 +61,15 @@ export default function BriefClient() {
   useEffect(() => {
     load()
   }, [])
+
+  function toggleSection(index: number) {
+    setExpandedSections((current) => {
+      const next = new Set(current)
+      if (next.has(index)) next.delete(index)
+      else next.add(index)
+      return next
+    })
+  }
 
   if (loading) {
     return (
@@ -118,13 +130,32 @@ export default function BriefClient() {
               <p className="mb-0" style={{ marginTop: 'var(--space-2)' }}>{brief.summary}</p>
             </div>
 
-            <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
-              {brief.sections.map((section) => (
-                <article key={section.title} className="brief-section-card">
-                  <h3 className="brief-section-title">{section.title}</h3>
-                  <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>{section.content}</p>
-                </article>
-              ))}
+            <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+              {brief.sections.map((section, index) => {
+                const isExpanded = expandedSections.has(index)
+
+                return (
+                  <article key={`${section.title}-${index}`} className="brief-section-card">
+                    <button
+                      type="button"
+                      className="brief-section-toggle"
+                      onClick={() => toggleSection(index)}
+                      aria-expanded={isExpanded}
+                    >
+                      <span className="brief-section-toggle-main">
+                        {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                        <span className="brief-section-title mb-0">{section.title}</span>
+                      </span>
+                    </button>
+
+                    {isExpanded ? (
+                      <div className="brief-section-content">
+                        <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>{section.content}</p>
+                      </div>
+                    ) : null}
+                  </article>
+                )
+              })}
             </div>
 
             <div>
@@ -134,7 +165,13 @@ export default function BriefClient() {
               ) : (
                 <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
                   {brief.sources.map((source) => (
-                    <a key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer" className="quick-link-row">
+                    <a
+                      key={`${source.title}-${source.url}`}
+                      href={source.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="quick-link-row"
+                    >
                       <span className="quick-link-main">
                         <ExternalLink size={16} />
                         <span>
