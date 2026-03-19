@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, Leaf, Radar, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Leaf, Radar, Newspaper, Menu, X } from 'lucide-react'
 
 const NAV_ITEMS = [
   {
@@ -20,6 +20,11 @@ const NAV_ITEMS = [
     href: '/agents',
     label: 'Agents',
     Icon: Radar,
+  },
+  {
+    href: '/brief',
+    label: 'Brief',
+    Icon: Newspaper,
   },
 ]
 

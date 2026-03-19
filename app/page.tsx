@@ -15,6 +15,7 @@ import {
   Clock3,
   CircleOff,
   Radar,
+  Newspaper,
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { prisma } from '@/lib/db'
@@ -172,6 +173,18 @@ export default async function HomePage() {
             <div className="app-content">
               <div className="app-title">Agent Monitor</div>
               <div className="app-description">Live status for all orchestration agents</div>
+            </div>
+            <span className="app-arrow">
+              <ChevronRight />
+            </span>
+          </Link>
+          <Link href="/brief" className="app-card">
+            <div className="app-icon info">
+              <Newspaper />
+            </div>
+            <div className="app-content">
+              <div className="app-title">Daily Brief</div>
+              <div className="app-description">One-screen overnight priorities and next actions</div>
             </div>
             <span className="app-arrow">
               <ChevronRight />

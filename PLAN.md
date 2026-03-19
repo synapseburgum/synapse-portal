@@ -86,6 +86,57 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 03:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a new **Daily Brief** feature as a high-utility, mobile-first command center for overnight and morning triage.
+- Added new page: **`/brief`**.
+- Added new API endpoint: **`GET /api/brief/daily`**.
+- Added shared server utility: **`lib/brief.ts`** to aggregate notifications, garden task urgency, and agent health in one payload.
+- Integrated Daily Brief into navigation and discovery points:
+  - New **Brief** item in mobile nav/top nav.
+  - New **Daily Brief** app card on dashboard (`/`).
+
+### Why this was selected
+- Most useful next improvement for Tim is a single screen that answers: **What needs attention first right now?**
+- Tim’s setup spans Telegram + multi-agent operations + gardening tasks; this feature reduces context switching between `/`, `/agents`, and `/gardening/tasks`.
+- It is especially practical for overnight/early-morning checks on phone.
+
+### Mobile-first behavior delivered
+- Priority-first layout with compact cards and clear action routing.
+- Responsive KPI grid (4→2→1 columns) for small screens.
+- Tap-friendly priority queue rows linking directly to action pages.
+- Tight notification rows with clamped message previews.
+
+### Daily brief logic delivered
+- Summary KPIs:
+  - unread notifications
+  - garden tasks due today
+  - overdue tasks
+  - offline agents
+- Priority queue auto-populates from urgency signals:
+  - overdue tasks
+  - offline agents
+  - unread notifications
+- Includes:
+  - due/overdue task shortlist
+  - agent watchlist (non-active agents)
+  - unread notification feed
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Runtime smoke checks passed on production server (`npm run start -p 3470`):
+  - `/brief`
+  - `/api/brief/daily`
+  - dashboard links/nav to `/brief`
+- Confirmed nav active states and mobile menu include the new Brief route.
+
+### Notes
+- The existing dev server on `:3456` was serving an older build; validation was therefore run against a fresh production server on `:3470` after build.
+- No betting/gambling/Racer functionality added.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists
