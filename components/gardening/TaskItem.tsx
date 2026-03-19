@@ -1,4 +1,4 @@
-import { CalendarDays, Repeat } from 'lucide-react'
+import { Archive, CalendarDays, Repeat } from 'lucide-react'
 import TaskCheckbox from './TaskCheckbox'
 
 interface TaskItemProps {
@@ -9,6 +9,7 @@ interface TaskItemProps {
   recurring?: string | null
   completedForDate: boolean
   date: string
+  archiveAction?: (formData: FormData) => Promise<void>
 }
 
 export default function TaskItem({
@@ -19,6 +20,7 @@ export default function TaskItem({
   recurring,
   completedForDate,
   date,
+  archiveAction,
 }: TaskItemProps) {
   return (
     <div className="task-item">
@@ -34,6 +36,14 @@ export default function TaskItem({
             <span className="badge accent" style={{ marginLeft: 'var(--space-2)' }}>
               <Repeat size={12} style={{ marginRight: '4px' }} /> {recurring}
             </span>
+          ) : null}
+          {archiveAction ? (
+            <form action={archiveAction} style={{ marginLeft: 'auto' }}>
+              <input type="hidden" name="id" value={id} />
+              <button type="submit" className="btn btn-outline" style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)' }}>
+                <Archive size={13} /> Archive
+              </button>
+            </form>
           ) : null}
         </div>
         {description ? <p className="text-muted mb-0" style={{ fontSize: 'var(--text-sm)' }}>{description}</p> : null}

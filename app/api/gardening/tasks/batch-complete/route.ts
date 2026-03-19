@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     const tasks = await prisma.gardenTask.findMany({
-      where: { id: { in: taskIds } },
+      where: { id: { in: taskIds }, archivedAt: null },
       select: { id: true, recurring: true },
     })
 

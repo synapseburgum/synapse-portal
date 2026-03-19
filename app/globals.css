@@ -1948,6 +1948,131 @@ textarea.form-input {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   TODAY VIEW - NOW / NEXT / LATER HORIZON SECTIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.horizon-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.horizon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.horizon-card.horizon-now::before {
+  background: linear-gradient(90deg, var(--error) 0%, var(--warning) 100%);
+}
+
+.horizon-card.horizon-next::before {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--secondary) 100%);
+}
+
+.horizon-card.horizon-later::before {
+  background: linear-gradient(90deg, var(--text-muted) 0%, var(--bg-muted) 100%);
+}
+
+.horizon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.horizon-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.horizon-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horizon-now .horizon-icon {
+  background: var(--error-subtle);
+  color: var(--error);
+}
+
+.horizon-next .horizon-icon {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+
+.horizon-later .horizon-icon {
+  background: var(--bg-muted);
+  color: var(--text-muted);
+}
+
+.horizon-subtitle {
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: var(--space-1);
+}
+
+.horizon-section-empty {
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.horizon-section-empty-text {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Why it matters - context text */
+.why-it-matters {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.why-it-matters::before {
+  content: '→';
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+/* Priority score badge */
+.priority-score {
+  font-variant-numeric: tabular-nums;
+  padding: 2px 6px;
+  background: var(--bg-sunken);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+/* Calendar event row for time + why */
+.calendar-event-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.calendar-event-why {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    TODAY VIEW
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -2017,6 +2142,142 @@ textarea.form-input {
   .today-action-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   GARDENING TODO PRIORITY
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.todo-priority-card {
+  border-width: 1px;
+  border-color: oklch(0.62 0.2 25 / 0.18);
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-sunken) 100%);
+}
+
+.todo-priority-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.todo-priority-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.todo-priority-stack {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.todo-priority-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid oklch(0.18 0.015 270 / 0.1);
+  padding: var(--space-3);
+}
+
+.todo-priority-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.todo-priority-main strong {
+  font-size: var(--text-sm);
+  line-height: 1.2;
+}
+
+.todo-priority-main span {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.todo-priority-item.urgency-critical {
+  border-color: oklch(0.62 0.2 25 / 0.35);
+  background: oklch(0.62 0.2 25 / 0.08);
+}
+
+.todo-priority-item.urgency-high {
+  border-color: oklch(0.75 0.15 70 / 0.35);
+  background: oklch(0.75 0.15 70 / 0.08);
+}
+
+.todo-priority-item.urgency-medium {
+  border-color: oklch(0.65 0.15 240 / 0.3);
+  background: oklch(0.65 0.15 240 / 0.08);
+}
+
+.todo-priority-item.urgency-low {
+  border-color: oklch(0.62 0.18 195 / 0.28);
+  background: oklch(0.62 0.18 195 / 0.08);
+}
+
+@media (max-width: 640px) {
+  .todo-priority-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .todo-priority-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .todo-priority-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BRIEF MARKDOWN
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.brief-markdown {
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.brief-markdown p {
+  margin: 0 0 var(--space-3) 0;
+}
+
+.brief-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.brief-markdown ul,
+.brief-markdown ol {
+  margin: 0 0 var(--space-3) 0;
+  padding-left: 1.2rem;
+}
+
+.brief-markdown li {
+  margin-bottom: var(--space-1);
+}
+
+.brief-markdown strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.brief-markdown em {
+  color: var(--text-secondary);
+}
+
+.brief-markdown code {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+  font-size: var(--text-xs);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────

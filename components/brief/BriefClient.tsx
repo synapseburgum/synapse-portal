@@ -1,9 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { CalendarDays, ChevronDown, ChevronRight, ExternalLink, RefreshCcw } from 'lucide-react'
 
-type BriefSection = { title: string; content: string }
+type BriefLink = { title: string; url: string }
+type BriefSection = {
+  title: string
+  summary: string
+  details?: string
+  links?: BriefLink[]
+  tags?: string[]
+}
 type BriefSource = { title: string; url: string }
 
 type Brief = {
@@ -19,6 +27,78 @@ type BriefListItem = {
   date: string
   title: string
   generatedAt: string
+}
+
+function normalizeSection(input: unknown): BriefSection | null {
+  if (!input || typeof input !== 'object') return null
+  const obj = input as Record<string, unknown>
+
+  const title = String(obj.title || '').trim()
+  const summary = String(obj.summary || obj.content || '').trim()
+  if (!title || !summary) return null
+
+  const details = typeof obj.details === 'string' ? obj.details.trim() : undefined
+
+  const links = Array.isArray(obj.links)
+    ? obj.links
+        .map((link) => {
+          if (!link || typeof link !== 'object') return null
+          const l = link as Record<string, unknown>
+          const lt = String(l.title || '').trim()
+          const lu = String(l.url || '').trim()
+          if (!lt || !lu) return null
+          return { title: lt, url: lu }
+        })
+        .filter((v): v is BriefLink => Boolean(v))
+    : undefined
+
+  const parsedTags = Array.isArray(obj.tags)
+    ? obj.tags.map((tag) => String(tag || '').trim()).filter(Boolean)
+    : undefined
+
+  return {
+    title,
+    summary,
+    ...(details ? { details } : {}),
+    ...(links && links.length > 0 ? { links } : {}),
+    ...(parsedTags && parsedTags.length > 0 ? { tags: parsedTags } : {}),
+  }
+}
+
+function normalizeBrief(input: unknown): Brief | null {
+  if (!input || typeof input !== 'object') return null
+  const obj = input as Record<string, unknown>
+
+  const date = String(obj.date || '').trim()
+  const title = String(obj.title || '').trim()
+  const summary = String(obj.summary || '').trim()
+  const generatedAt = String(obj.generatedAt || '').trim()
+
+  if (!date || !title || !summary || !generatedAt) return null
+
+  const rawSections = Array.isArray(obj.sections) ? obj.sections : []
+  const sections = rawSections.map(normalizeSection).filter((s): s is BriefSection => Boolean(s))
+
+  const rawSources = Array.isArray(obj.sources) ? obj.sources : []
+  const sources = rawSources
+    .map((src) => {
+      if (!src || typeof src !== 'object') return null
+      const source = src as Record<string, unknown>
+      const st = String(source.title || '').trim()
+      const su = String(source.url || '').trim()
+      if (!st || !su) return null
+      return { title: st, url: su }
+    })
+    .filter((v): v is BriefSource => Boolean(v))
+
+  return {
+    date,
+    title,
+    summary,
+    sections,
+    sources,
+    generatedAt,
+  }
 }
 
 export default function BriefClient() {
@@ -45,7 +125,7 @@ export default function BriefClient() {
         throw new Error('Failed to fetch brief data')
       }
 
-      const nextBrief = (todayJson?.brief || null) as Brief | null
+      const nextBrief = normalizeBrief(todayJson?.brief || null)
       setBrief(nextBrief)
       setArchive(Array.isArray(listJson?.briefs) ? listJson.briefs : [])
       setExpandedSections(new Set(nextBrief && nextBrief.sections.length > 0 ? [0] : []))
@@ -127,32 +207,77 @@ export default function BriefClient() {
           <div className="card-body" style={{ display: 'grid', gap: 'var(--space-4)' }}>
             <div className="brief-tldr-box">
               <strong>Summary</strong>
-              <p className="mb-0" style={{ marginTop: 'var(--space-2)' }}>{brief.summary}</p>
+              <p className="mb-0" style={{ marginTop: 'var(--space-2)', lineHeight: 1.6 }}>{brief.summary}</p>
             </div>
 
-            <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+            <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
               {brief.sections.map((section, index) => {
                 const isExpanded = expandedSections.has(index)
+                const hasDetails = Boolean(section.details)
 
                 return (
-                  <article key={`${section.title}-${index}`} className="brief-section-card">
-                    <button
-                      type="button"
-                      className="brief-section-toggle"
-                      onClick={() => toggleSection(index)}
-                      aria-expanded={isExpanded}
-                    >
-                      <span className="brief-section-toggle-main">
-                        {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                        <span className="brief-section-title mb-0">{section.title}</span>
-                      </span>
-                    </button>
+                  <article key={`${section.title}-${index}`} className="brief-section-card" style={{ borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                    <div className="brief-section-content" style={{ display: 'grid', gap: 'var(--space-2)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--space-2)' }}>
+                        <div>
+                          <h3 className="brief-section-title" style={{ marginBottom: 'var(--space-1)' }}>{section.title}</h3>
+                          <p className="mb-0" style={{ lineHeight: 1.6 }}>{section.summary}</p>
+                        </div>
 
-                    {isExpanded ? (
-                      <div className="brief-section-content">
-                        <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>{section.content}</p>
+                        {hasDetails ? (
+                          <button
+                            type="button"
+                            className="btn btn-outline"
+                            style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)', flexShrink: 0 }}
+                            onClick={() => toggleSection(index)}
+                            aria-expanded={isExpanded}
+                          >
+                            {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                            {isExpanded ? 'Show less' : 'Read more'}
+                          </button>
+                        ) : null}
                       </div>
-                    ) : null}
+
+                      {section.tags && section.tags.length > 0 ? (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-1)' }}>
+                          {section.tags.map((tag) => (
+                            <span key={`${section.title}-tag-${tag}`} className="badge muted">#{tag}</span>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      {isExpanded && section.details ? (
+                        <div style={{ borderTop: '1px solid var(--border)', paddingTop: 'var(--space-3)' }}>
+                          <div className="brief-markdown">
+                            <ReactMarkdown>{section.details}</ReactMarkdown>
+                          </div>
+
+                          {section.links && section.links.length > 0 ? (
+                            <div style={{ marginTop: 'var(--space-3)', display: 'grid', gap: 'var(--space-2)' }}>
+                              <h4 style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Related links</h4>
+                              {section.links.map((link) => (
+                                <a
+                                  key={`${section.title}-${link.url}`}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="quick-link-row"
+                                >
+                                  <span className="quick-link-main">
+                                    <ExternalLink size={15} />
+                                    <span>
+                                      <span className="quick-link-title">{link.title}</span>
+                                      <span className="quick-link-description">{link.url}</span>
+                                    </span>
+                                  </span>
+                                  <ExternalLink size={14} />
+                                </a>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : null}
+                    </div>
                   </article>
                 )
               })}

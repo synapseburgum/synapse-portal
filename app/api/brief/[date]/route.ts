@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getBriefByDate } from '@/lib/brief'
+import { readBriefByDate } from '@/lib/briefStorage'
 
 // GET /api/brief/[date]
 export async function GET(
@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { date } = await params
-    const brief = await getBriefByDate(date)
+    const brief = await readBriefByDate(date)
 
     return NextResponse.json({ ok: true, data: brief })
   } catch {

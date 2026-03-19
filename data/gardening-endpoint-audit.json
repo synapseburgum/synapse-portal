@@ -1,0 +1,2314 @@
+{
+  "baseUrl": "http://127.0.0.1:3456",
+  "timestamp": "2026-03-19T14:33:03.291Z",
+  "summary": {
+    "total": 31,
+    "passed": 31,
+    "failed": 0
+  },
+  "results": [
+    {
+      "name": "GET /api/gardening/plants",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 51,
+      "body": {
+        "plants": [
+          {
+            "id": "902c0e67-86c8-45d5-b94e-157f6844569a",
+            "name": "Audit Plant audit-1773923811865",
+            "variety": "Test",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 90,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-19T12:36:51.879Z",
+            "updatedAt": "2026-03-19T12:36:51.879Z",
+            "_count": {
+              "plantings": 1,
+              "seedInventory": 1
+            }
+          },
+          {
+            "id": "ea2177be-639f-4d73-b4ad-755f8fdb4c4b",
+            "name": "Audit Plant audit-1773923889492",
+            "variety": "Test",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 90,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-19T12:38:09.506Z",
+            "updatedAt": "2026-03-19T12:38:09.506Z",
+            "_count": {
+              "plantings": 1,
+              "seedInventory": 1
+            }
+          },
+          {
+            "id": "herb-basil",
+            "name": "Basil",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Basil.",
+            "sowIndoorStart": 3,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 6,
+            "harvestEnd": 9,
+            "daysToGerminate": 8,
+            "daysToHarvest": 50,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.953Z",
+            "updatedAt": "2026-03-18T20:01:31.448Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-beetroot",
+            "name": "Beetroot",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Beetroot.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 6,
+            "harvestEnd": 10,
+            "daysToGerminate": 10,
+            "daysToHarvest": 60,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.805Z",
+            "updatedAt": "2026-03-18T20:01:31.312Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-broad-bean",
+            "name": "Broad Bean",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Broad Bean.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 2,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 6,
+            "harvestEnd": 8,
+            "daysToGerminate": 12,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.852Z",
+            "updatedAt": "2026-03-18T20:01:31.373Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-cabbage",
+            "name": "Cabbage",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Cabbage.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 7,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 8,
+            "harvestStart": 6,
+            "harvestEnd": 12,
+            "daysToGerminate": null,
+            "daysToHarvest": 100,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.910Z",
+            "updatedAt": "2026-03-18T20:01:31.416Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-carrot",
+            "name": "Carrot",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Carrot.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 6,
+            "harvestEnd": 11,
+            "daysToGerminate": 14,
+            "daysToHarvest": 75,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.773Z",
+            "updatedAt": "2026-03-18T20:01:31.267Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-celery",
+            "name": "Celery",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Celery.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 8,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 130,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.942Z",
+            "updatedAt": "2026-03-18T20:01:31.439Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-chives",
+            "name": "Chives",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Chives.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 5,
+            "harvestEnd": 10,
+            "daysToGerminate": 14,
+            "daysToHarvest": 60,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.987Z",
+            "updatedAt": "2026-03-18T20:01:31.473Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-coriander",
+            "name": "Coriander",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Coriander.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 9,
+            "harvestStart": 5,
+            "harvestEnd": 10,
+            "daysToGerminate": 14,
+            "daysToHarvest": 45,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.976Z",
+            "updatedAt": "2026-03-18T20:01:31.464Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-courgette",
+            "name": "Courgette",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Courgette.",
+            "sowIndoorStart": 4,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 55,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.876Z",
+            "updatedAt": "2026-03-18T20:01:31.391Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-cucumber",
+            "name": "Cucumber",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Cucumber.",
+            "sowIndoorStart": 3,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": 8,
+            "daysToHarvest": 65,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.765Z",
+            "updatedAt": "2026-03-18T20:01:31.252Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-dill",
+            "name": "Dill",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Dill.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 4,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 6,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 45,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:07.041Z",
+            "updatedAt": "2026-03-18T20:01:31.522Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-french-bean",
+            "name": "French Bean",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for French Bean.",
+            "sowIndoorStart": 4,
+            "sowIndoorEnd": 6,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 60,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.864Z",
+            "updatedAt": "2026-03-18T20:01:31.382Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-garlic",
+            "name": "Garlic",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Garlic.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 10,
+            "sowOutdoorEnd": 11,
+            "harvestStart": 6,
+            "harvestEnd": 7,
+            "daysToGerminate": null,
+            "daysToHarvest": 240,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.822Z",
+            "updatedAt": "2026-03-18T20:01:31.341Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-kale",
+            "name": "Kale",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Kale.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 4,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 8,
+            "harvestEnd": 3,
+            "daysToGerminate": null,
+            "daysToHarvest": 80,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.921Z",
+            "updatedAt": "2026-03-18T20:01:31.424Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-leek",
+            "name": "Leek",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Leek.",
+            "sowIndoorStart": 1,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 9,
+            "harvestEnd": 3,
+            "daysToGerminate": null,
+            "daysToHarvest": 120,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.932Z",
+            "updatedAt": "2026-03-18T20:01:31.432Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-lettuce",
+            "name": "Lettuce",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Lettuce.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 9,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 9,
+            "harvestStart": 4,
+            "harvestEnd": 10,
+            "daysToGerminate": 7,
+            "daysToHarvest": 45,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.782Z",
+            "updatedAt": "2026-03-18T20:01:31.281Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-mint",
+            "name": "Mint",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Mint.",
+            "sowIndoorStart": 3,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 4,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 6,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 70,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.998Z",
+            "updatedAt": "2026-03-18T20:01:31.482Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-onion",
+            "name": "Onion",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Onion.",
+            "sowIndoorStart": 1,
+            "sowIndoorEnd": 3,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 4,
+            "harvestStart": 7,
+            "harvestEnd": 9,
+            "daysToGerminate": 12,
+            "daysToHarvest": 110,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.813Z",
+            "updatedAt": "2026-03-18T20:01:31.327Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-oregano",
+            "name": "Oregano",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Oregano.",
+            "sowIndoorStart": 3,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 75,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:07.030Z",
+            "updatedAt": "2026-03-18T20:01:31.511Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-parsley",
+            "name": "Parsley",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Parsley.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 7,
+            "harvestStart": 6,
+            "harvestEnd": 11,
+            "daysToGerminate": 21,
+            "daysToHarvest": 70,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.965Z",
+            "updatedAt": "2026-03-18T20:01:31.456Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-pea",
+            "name": "Pea",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Pea.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 2,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 6,
+            "harvestEnd": 8,
+            "daysToGerminate": 10,
+            "daysToHarvest": 70,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.841Z",
+            "updatedAt": "2026-03-18T20:01:31.361Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-potato",
+            "name": "Potato",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Potato.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 6,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 100,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.831Z",
+            "updatedAt": "2026-03-18T20:01:31.353Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-pumpkin",
+            "name": "Pumpkin",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Pumpkin.",
+            "sowIndoorStart": 4,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 9,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 110,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.886Z",
+            "updatedAt": "2026-03-18T20:01:31.399Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-radish",
+            "name": "Radish",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Radish.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 9,
+            "harvestStart": 4,
+            "harvestEnd": 10,
+            "daysToGerminate": 6,
+            "daysToHarvest": 30,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.797Z",
+            "updatedAt": "2026-03-18T20:01:31.301Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-rosemary",
+            "name": "Rosemary",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Rosemary.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 120,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:07.019Z",
+            "updatedAt": "2026-03-18T20:01:31.500Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-sage",
+            "name": "Sage",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Sage.",
+            "sowIndoorStart": 3,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 90,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:07.052Z",
+            "updatedAt": "2026-03-18T20:01:31.535Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-spinach",
+            "name": "Spinach",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Spinach.",
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 9,
+            "harvestStart": 4,
+            "harvestEnd": 10,
+            "daysToGerminate": 10,
+            "daysToHarvest": 50,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.790Z",
+            "updatedAt": "2026-03-18T20:01:31.292Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-sweetcorn",
+            "name": "Sweetcorn",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Sweetcorn.",
+            "sowIndoorStart": 4,
+            "sowIndoorEnd": 5,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 8,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 90,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.898Z",
+            "updatedAt": "2026-03-18T20:01:31.407Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "herb-thyme",
+            "name": "Thyme",
+            "variety": null,
+            "category": "herb",
+            "description": "Seeded sample data for Thyme.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 4,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 6,
+            "harvestEnd": 9,
+            "daysToGerminate": null,
+            "daysToHarvest": 80,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:07.009Z",
+            "updatedAt": "2026-03-18T20:01:31.491Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          },
+          {
+            "id": "vegetable-tomato",
+            "name": "Tomato",
+            "variety": null,
+            "category": "vegetable",
+            "description": "Seeded sample data for Tomato.",
+            "sowIndoorStart": 2,
+            "sowIndoorEnd": 4,
+            "sowOutdoorStart": 5,
+            "sowOutdoorEnd": 6,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": 10,
+            "daysToHarvest": 85,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": null,
+            "imageUrl": null,
+            "createdAt": "2026-03-18T19:56:06.755Z",
+            "updatedAt": "2026-03-18T20:01:31.238Z",
+            "_count": {
+              "plantings": 0,
+              "seedInventory": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET /api/gardening/seeds",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 6,
+      "body": {
+        "seeds": [
+          {
+            "id": "e90a293a-c232-413b-b08f-b6fdc85d25c8",
+            "plantId": "ea2177be-639f-4d73-b4ad-755f8fdb4c4b",
+            "quantity": 42,
+            "purchasedDate": null,
+            "expiryDate": null,
+            "supplier": "Audit Supplier",
+            "batchCode": "audit-1773923889492",
+            "notes": null,
+            "createdAt": "2026-03-19T12:38:09.530Z",
+            "updatedAt": "2026-03-19T12:38:09.530Z",
+            "plant": {
+              "id": "ea2177be-639f-4d73-b4ad-755f8fdb4c4b",
+              "name": "Audit Plant audit-1773923889492",
+              "variety": "Test",
+              "category": "vegetable",
+              "description": null,
+              "sowIndoorStart": null,
+              "sowIndoorEnd": null,
+              "sowOutdoorStart": 3,
+              "sowOutdoorEnd": 5,
+              "harvestStart": 7,
+              "harvestEnd": 9,
+              "daysToGerminate": null,
+              "daysToHarvest": 90,
+              "spacingCm": null,
+              "depthCm": null,
+              "notes": null,
+              "imageUrl": null,
+              "createdAt": "2026-03-19T12:38:09.506Z",
+              "updatedAt": "2026-03-19T12:38:09.506Z"
+            }
+          },
+          {
+            "id": "b1777515-e5de-42bb-b7ec-06a33525db6a",
+            "plantId": "902c0e67-86c8-45d5-b94e-157f6844569a",
+            "quantity": 42,
+            "purchasedDate": null,
+            "expiryDate": null,
+            "supplier": "Audit Supplier",
+            "batchCode": "audit-1773923811865",
+            "notes": null,
+            "createdAt": "2026-03-19T12:36:51.906Z",
+            "updatedAt": "2026-03-19T12:36:51.906Z",
+            "plant": {
+              "id": "902c0e67-86c8-45d5-b94e-157f6844569a",
+              "name": "Audit Plant audit-1773923811865",
+              "variety": "Test",
+              "category": "vegetable",
+              "description": null,
+              "sowIndoorStart": null,
+              "sowIndoorEnd": null,
+              "sowOutdoorStart": 3,
+              "sowOutdoorEnd": 5,
+              "harvestStart": 7,
+              "harvestEnd": 9,
+              "daysToGerminate": null,
+              "daysToHarvest": 90,
+              "spacingCm": null,
+              "depthCm": null,
+              "notes": null,
+              "imageUrl": null,
+              "createdAt": "2026-03-19T12:36:51.879Z",
+              "updatedAt": "2026-03-19T12:36:51.879Z"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET /api/gardening/seeds?lowStock=true",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 4,
+      "body": {
+        "seeds": []
+      }
+    },
+    {
+      "name": "GET /api/gardening/plantings",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 4,
+      "body": {
+        "plantings": [
+          {
+            "id": "40a74fb9-786c-4868-9332-58c16b3aa403",
+            "plantId": "ea2177be-639f-4d73-b4ad-755f8fdb4c4b",
+            "location": "audit-bed",
+            "sowDate": "2026-03-19T12:38:09.538Z",
+            "transplantDate": null,
+            "expectedHarvestDate": null,
+            "actualHarvestDate": null,
+            "quantity": 6,
+            "status": "growing",
+            "notes": null,
+            "createdAt": "2026-03-19T12:38:09.554Z",
+            "updatedAt": "2026-03-19T12:38:09.582Z",
+            "plant": {
+              "id": "ea2177be-639f-4d73-b4ad-755f8fdb4c4b",
+              "name": "Audit Plant audit-1773923889492",
+              "variety": "Test",
+              "category": "vegetable",
+              "description": null,
+              "sowIndoorStart": null,
+              "sowIndoorEnd": null,
+              "sowOutdoorStart": 3,
+              "sowOutdoorEnd": 5,
+              "harvestStart": 7,
+              "harvestEnd": 9,
+              "daysToGerminate": null,
+              "daysToHarvest": 90,
+              "spacingCm": null,
+              "depthCm": null,
+              "notes": null,
+              "imageUrl": null,
+              "createdAt": "2026-03-19T12:38:09.506Z",
+              "updatedAt": "2026-03-19T12:38:09.506Z"
+            }
+          },
+          {
+            "id": "c5523bfb-eda7-4f85-a511-d99ccf214796",
+            "plantId": "902c0e67-86c8-45d5-b94e-157f6844569a",
+            "location": "audit-bed",
+            "sowDate": "2026-03-19T12:36:51.916Z",
+            "transplantDate": null,
+            "expectedHarvestDate": null,
+            "actualHarvestDate": null,
+            "quantity": 6,
+            "status": "growing",
+            "notes": null,
+            "createdAt": "2026-03-19T12:36:51.934Z",
+            "updatedAt": "2026-03-19T12:36:51.966Z",
+            "plant": {
+              "id": "902c0e67-86c8-45d5-b94e-157f6844569a",
+              "name": "Audit Plant audit-1773923811865",
+              "variety": "Test",
+              "category": "vegetable",
+              "description": null,
+              "sowIndoorStart": null,
+              "sowIndoorEnd": null,
+              "sowOutdoorStart": 3,
+              "sowOutdoorEnd": 5,
+              "harvestStart": 7,
+              "harvestEnd": 9,
+              "daysToGerminate": null,
+              "daysToHarvest": 90,
+              "spacingCm": null,
+              "depthCm": null,
+              "notes": null,
+              "imageUrl": null,
+              "createdAt": "2026-03-19T12:36:51.879Z",
+              "updatedAt": "2026-03-19T12:36:51.879Z"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET /api/gardening/tasks",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 5,
+      "body": {
+        "tasks": [
+          {
+            "id": "27b8d195-89e3-4663-a61f-e1510722099b",
+            "title": "Water tomatoes",
+            "description": "Detected due hint: tomorrow One-off task unless edited. Intent reason: Detected gardening keywords in quick capture text. Original capture: water tomatoes tomorrow",
+            "dueDate": "2026-03-20T09:00:00.000Z",
+            "completed": true,
+            "completedAt": "2026-03-19T13:09:42.468Z",
+            "recurring": null,
+            "archivedAt": null,
+            "createdAt": "2026-03-19T05:07:14.179Z",
+            "updatedAt": "2026-03-19T13:09:42.469Z"
+          },
+          {
+            "id": "3d0050ea-c71a-4e7d-b732-893c9a4295f6",
+            "title": "Audit Task audit-1773923811865",
+            "description": "Endpoint audit task",
+            "dueDate": "2026-03-20T12:36:51.975Z",
+            "completed": false,
+            "completedAt": null,
+            "recurring": "weekly",
+            "archivedAt": null,
+            "createdAt": "2026-03-19T12:36:51.989Z",
+            "updatedAt": "2026-03-19T12:36:52.087Z"
+          },
+          {
+            "id": "66c9c4be-b41a-4649-aa56-50c8dcdfaa7a",
+            "title": "Audit Task audit-1773923889492",
+            "description": "Endpoint audit task",
+            "dueDate": "2026-03-20T12:38:09.592Z",
+            "completed": true,
+            "completedAt": "2026-03-19T12:38:09.675Z",
+            "recurring": "weekly",
+            "archivedAt": null,
+            "createdAt": "2026-03-19T12:38:09.606Z",
+            "updatedAt": "2026-03-19T12:38:09.676Z"
+          },
+          {
+            "id": "69df7fe0-8ede-4a10-8ab5-cf421d90230d",
+            "title": "Sow spinach",
+            "description": "Detected due hint: next monday One-off task unless edited. Intent reason: Detected gardening keywords in quick capture text. Original capture: Sow spinach next Monday",
+            "dueDate": "2026-03-23T09:00:00.000Z",
+            "completed": false,
+            "completedAt": null,
+            "recurring": null,
+            "archivedAt": null,
+            "createdAt": "2026-03-19T12:00:45.441Z",
+            "updatedAt": "2026-03-19T12:00:45.441Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET /api/gardening/tasks?upcoming=true",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 4,
+      "body": {
+        "tasks": [
+          {
+            "id": "3d0050ea-c71a-4e7d-b732-893c9a4295f6",
+            "title": "Audit Task audit-1773923811865",
+            "description": "Endpoint audit task",
+            "dueDate": "2026-03-20T12:36:51.975Z",
+            "completed": false,
+            "completedAt": null,
+            "recurring": "weekly",
+            "archivedAt": null,
+            "createdAt": "2026-03-19T12:36:51.989Z",
+            "updatedAt": "2026-03-19T12:36:52.087Z"
+          },
+          {
+            "id": "69df7fe0-8ede-4a10-8ab5-cf421d90230d",
+            "title": "Sow spinach",
+            "description": "Detected due hint: next monday One-off task unless edited. Intent reason: Detected gardening keywords in quick capture text. Original capture: Sow spinach next Monday",
+            "dueDate": "2026-03-23T09:00:00.000Z",
+            "completed": false,
+            "completedAt": null,
+            "recurring": null,
+            "archivedAt": null,
+            "createdAt": "2026-03-19T12:00:45.441Z",
+            "updatedAt": "2026-03-19T12:00:45.441Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET /api/gardening/calendar",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 15,
+      "body": {
+        "events": [
+          {
+            "id": "task-27b8d195-89e3-4663-a61f-e1510722099b",
+            "type": "task",
+            "title": "Water tomatoes",
+            "date": "2026-03-20T09:00:00.000Z",
+            "source": "task"
+          },
+          {
+            "id": "task-69df7fe0-8ede-4a10-8ab5-cf421d90230d",
+            "type": "task",
+            "title": "Sow spinach",
+            "date": "2026-03-23T09:00:00.000Z",
+            "source": "task"
+          },
+          {
+            "id": "task-3d0050ea-c71a-4e7d-b732-893c9a4295f6",
+            "type": "task",
+            "title": "Audit Task audit-1773923811865",
+            "date": "2026-03-20T12:36:51.975Z",
+            "source": "task"
+          },
+          {
+            "id": "task-66c9c4be-b41a-4649-aa56-50c8dcdfaa7a",
+            "type": "task",
+            "title": "Audit Task audit-1773923889492",
+            "date": "2026-03-20T12:38:09.592Z",
+            "source": "task"
+          },
+          {
+            "id": "window-sow-vegetable-tomato-5",
+            "type": "sowing",
+            "title": "Tomato: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-cucumber-5",
+            "type": "sowing",
+            "title": "Cucumber: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-carrot-3",
+            "type": "sowing",
+            "title": "Carrot: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-carrot-4",
+            "type": "sowing",
+            "title": "Carrot: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-carrot-5",
+            "type": "sowing",
+            "title": "Carrot: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-lettuce-3",
+            "type": "sowing",
+            "title": "Lettuce: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-lettuce-4",
+            "type": "sowing",
+            "title": "Lettuce: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-lettuce-5",
+            "type": "sowing",
+            "title": "Lettuce: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-lettuce-4",
+            "type": "harvest",
+            "title": "Lettuce: Harvest window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-lettuce-5",
+            "type": "harvest",
+            "title": "Lettuce: Harvest window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-spinach-3",
+            "type": "sowing",
+            "title": "Spinach: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-spinach-4",
+            "type": "sowing",
+            "title": "Spinach: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-spinach-5",
+            "type": "sowing",
+            "title": "Spinach: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-spinach-4",
+            "type": "harvest",
+            "title": "Spinach: Harvest window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-spinach-5",
+            "type": "harvest",
+            "title": "Spinach: Harvest window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-radish-3",
+            "type": "sowing",
+            "title": "Radish: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-radish-4",
+            "type": "sowing",
+            "title": "Radish: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-radish-5",
+            "type": "sowing",
+            "title": "Radish: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-radish-4",
+            "type": "harvest",
+            "title": "Radish: Harvest window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-vegetable-radish-5",
+            "type": "harvest",
+            "title": "Radish: Harvest window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-beetroot-3",
+            "type": "sowing",
+            "title": "Beetroot: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-beetroot-4",
+            "type": "sowing",
+            "title": "Beetroot: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-beetroot-5",
+            "type": "sowing",
+            "title": "Beetroot: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-onion-3",
+            "type": "sowing",
+            "title": "Onion: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-onion-4",
+            "type": "sowing",
+            "title": "Onion: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-potato-3",
+            "type": "sowing",
+            "title": "Potato: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-potato-4",
+            "type": "sowing",
+            "title": "Potato: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-potato-5",
+            "type": "sowing",
+            "title": "Potato: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-pea-3",
+            "type": "sowing",
+            "title": "Pea: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-pea-4",
+            "type": "sowing",
+            "title": "Pea: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-pea-5",
+            "type": "sowing",
+            "title": "Pea: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-broad-bean-3",
+            "type": "sowing",
+            "title": "Broad Bean: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-broad-bean-4",
+            "type": "sowing",
+            "title": "Broad Bean: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-broad-bean-5",
+            "type": "sowing",
+            "title": "Broad Bean: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-french-bean-5",
+            "type": "sowing",
+            "title": "French Bean: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-courgette-5",
+            "type": "sowing",
+            "title": "Courgette: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-pumpkin-5",
+            "type": "sowing",
+            "title": "Pumpkin: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-sweetcorn-5",
+            "type": "sowing",
+            "title": "Sweetcorn: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-cabbage-3",
+            "type": "sowing",
+            "title": "Cabbage: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-cabbage-4",
+            "type": "sowing",
+            "title": "Cabbage: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-cabbage-5",
+            "type": "sowing",
+            "title": "Cabbage: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-kale-4",
+            "type": "sowing",
+            "title": "Kale: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-kale-5",
+            "type": "sowing",
+            "title": "Kale: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-leek-3",
+            "type": "sowing",
+            "title": "Leek: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-leek-4",
+            "type": "sowing",
+            "title": "Leek: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-leek-5",
+            "type": "sowing",
+            "title": "Leek: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-vegetable-celery-5",
+            "type": "sowing",
+            "title": "Celery: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-basil-5",
+            "type": "sowing",
+            "title": "Basil: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-parsley-3",
+            "type": "sowing",
+            "title": "Parsley: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-parsley-4",
+            "type": "sowing",
+            "title": "Parsley: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-parsley-5",
+            "type": "sowing",
+            "title": "Parsley: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-coriander-3",
+            "type": "sowing",
+            "title": "Coriander: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-coriander-4",
+            "type": "sowing",
+            "title": "Coriander: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-coriander-5",
+            "type": "sowing",
+            "title": "Coriander: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-herb-coriander-5",
+            "type": "harvest",
+            "title": "Coriander: Harvest window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-chives-3",
+            "type": "sowing",
+            "title": "Chives: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-chives-4",
+            "type": "sowing",
+            "title": "Chives: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-chives-5",
+            "type": "sowing",
+            "title": "Chives: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-harvest-herb-chives-5",
+            "type": "harvest",
+            "title": "Chives: Harvest window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-mint-4",
+            "type": "sowing",
+            "title": "Mint: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-mint-5",
+            "type": "sowing",
+            "title": "Mint: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-thyme-4",
+            "type": "sowing",
+            "title": "Thyme: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-thyme-5",
+            "type": "sowing",
+            "title": "Thyme: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-rosemary-5",
+            "type": "sowing",
+            "title": "Rosemary: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-oregano-5",
+            "type": "sowing",
+            "title": "Oregano: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-dill-4",
+            "type": "sowing",
+            "title": "Dill: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-dill-5",
+            "type": "sowing",
+            "title": "Dill: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-herb-sage-5",
+            "type": "sowing",
+            "title": "Sage: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-902c0e67-86c8-45d5-b94e-157f6844569a-3",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923811865: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-902c0e67-86c8-45d5-b94e-157f6844569a-4",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923811865: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-902c0e67-86c8-45d5-b94e-157f6844569a-5",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923811865: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-ea2177be-639f-4d73-b4ad-755f8fdb4c4b-3",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923889492: Outdoor sowing window",
+            "date": "2026-03-01T00:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-ea2177be-639f-4d73-b4ad-755f8fdb4c4b-4",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923889492: Outdoor sowing window",
+            "date": "2026-03-31T23:00:00.000Z",
+            "source": "plant library"
+          },
+          {
+            "id": "window-sow-ea2177be-639f-4d73-b4ad-755f8fdb4c4b-5",
+            "type": "sowing",
+            "title": "Audit Plant audit-1773923889492: Outdoor sowing window",
+            "date": "2026-04-30T23:00:00.000Z",
+            "source": "plant library"
+          }
+        ]
+      }
+    },
+    {
+      "name": "POST /api/gardening/plants (unauth)",
+      "ok": true,
+      "status": 401,
+      "expectedStatuses": [
+        401
+      ],
+      "ms": 9,
+      "body": {
+        "error": "Invalid or missing API key"
+      }
+    },
+    {
+      "name": "POST /api/gardening/tasks (unauth)",
+      "ok": true,
+      "status": 401,
+      "expectedStatuses": [
+        401
+      ],
+      "ms": 6,
+      "body": {
+        "error": "Invalid or missing API key"
+      }
+    },
+    {
+      "name": "POST /api/gardening/plants (auth)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 17,
+      "body": {
+        "plant": {
+          "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "name": "Audit Plant audit-1773930783039",
+          "variety": "Test",
+          "category": "vegetable",
+          "description": null,
+          "sowIndoorStart": null,
+          "sowIndoorEnd": null,
+          "sowOutdoorStart": 3,
+          "sowOutdoorEnd": 5,
+          "harvestStart": 7,
+          "harvestEnd": 9,
+          "daysToGerminate": null,
+          "daysToHarvest": 90,
+          "spacingCm": null,
+          "depthCm": null,
+          "notes": "created by endpoint audit",
+          "imageUrl": null,
+          "createdAt": "2026-03-19T14:33:03.045Z",
+          "updatedAt": "2026-03-19T14:33:03.045Z"
+        }
+      }
+    },
+    {
+      "name": "GET /api/gardening/plants/568905b6-6eb9-4207-bc99-56bd7376cf5a",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 5,
+      "body": {
+        "plant": {
+          "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "name": "Audit Plant audit-1773930783039",
+          "variety": "Test",
+          "category": "vegetable",
+          "description": null,
+          "sowIndoorStart": null,
+          "sowIndoorEnd": null,
+          "sowOutdoorStart": 3,
+          "sowOutdoorEnd": 5,
+          "harvestStart": 7,
+          "harvestEnd": 9,
+          "daysToGerminate": null,
+          "daysToHarvest": 90,
+          "spacingCm": null,
+          "depthCm": null,
+          "notes": "created by endpoint audit",
+          "imageUrl": null,
+          "createdAt": "2026-03-19T14:33:03.045Z",
+          "updatedAt": "2026-03-19T14:33:03.045Z",
+          "seedInventory": [],
+          "plantings": []
+        }
+      }
+    },
+    {
+      "name": "PUT /api/gardening/plants/568905b6-6eb9-4207-bc99-56bd7376cf5a",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 11,
+      "body": {
+        "plant": {
+          "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "name": "Audit Plant audit-1773930783039 Updated",
+          "variety": "Improved",
+          "category": "vegetable",
+          "description": null,
+          "sowIndoorStart": null,
+          "sowIndoorEnd": null,
+          "sowOutdoorStart": 3,
+          "sowOutdoorEnd": 5,
+          "harvestStart": 7,
+          "harvestEnd": 10,
+          "daysToGerminate": null,
+          "daysToHarvest": 95,
+          "spacingCm": null,
+          "depthCm": null,
+          "notes": "created by endpoint audit",
+          "imageUrl": null,
+          "createdAt": "2026-03-19T14:33:03.045Z",
+          "updatedAt": "2026-03-19T14:33:03.064Z"
+        }
+      }
+    },
+    {
+      "name": "POST /api/gardening/seeds (auth)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "seed": {
+          "id": "3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "quantity": 42,
+          "purchasedDate": null,
+          "expiryDate": null,
+          "supplier": "Audit Supplier",
+          "batchCode": "audit-1773930783039",
+          "notes": null,
+          "createdAt": "2026-03-19T14:33:03.076Z",
+          "updatedAt": "2026-03-19T14:33:03.076Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /api/gardening/seeds/3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 4,
+      "body": {
+        "seed": {
+          "id": "3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "quantity": 42,
+          "purchasedDate": null,
+          "expiryDate": null,
+          "supplier": "Audit Supplier",
+          "batchCode": "audit-1773930783039",
+          "notes": null,
+          "createdAt": "2026-03-19T14:33:03.076Z",
+          "updatedAt": "2026-03-19T14:33:03.076Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "PUT /api/gardening/seeds/3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 13,
+      "body": {
+        "seed": {
+          "id": "3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "quantity": 36,
+          "purchasedDate": null,
+          "expiryDate": null,
+          "supplier": "Audit Supplier 2",
+          "batchCode": "audit-1773930783039-revA",
+          "notes": "updated via audit",
+          "createdAt": "2026-03-19T14:33:03.076Z",
+          "updatedAt": "2026-03-19T14:33:03.091Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "POST /api/gardening/plantings (auth)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "planting": {
+          "id": "26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "location": "audit-bed",
+          "sowDate": "2026-03-19T14:33:03.101Z",
+          "transplantDate": null,
+          "expectedHarvestDate": null,
+          "actualHarvestDate": null,
+          "quantity": 6,
+          "status": "sown",
+          "notes": null,
+          "createdAt": "2026-03-19T14:33:03.104Z",
+          "updatedAt": "2026-03-19T14:33:03.104Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /api/gardening/plantings/26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 4,
+      "body": {
+        "planting": {
+          "id": "26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "location": "audit-bed",
+          "sowDate": "2026-03-19T14:33:03.101Z",
+          "transplantDate": null,
+          "expectedHarvestDate": null,
+          "actualHarvestDate": null,
+          "quantity": 6,
+          "status": "sown",
+          "notes": null,
+          "createdAt": "2026-03-19T14:33:03.104Z",
+          "updatedAt": "2026-03-19T14:33:03.104Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /api/gardening/plantings (auth)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 13,
+      "body": {
+        "planting": {
+          "id": "26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "location": "audit-bed",
+          "sowDate": "2026-03-19T14:33:03.101Z",
+          "transplantDate": null,
+          "expectedHarvestDate": null,
+          "actualHarvestDate": null,
+          "quantity": 6,
+          "status": "growing",
+          "notes": null,
+          "createdAt": "2026-03-19T14:33:03.104Z",
+          "updatedAt": "2026-03-19T14:33:03.120Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "PUT /api/gardening/plantings/26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 13,
+      "body": {
+        "planting": {
+          "id": "26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+          "plantId": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+          "location": "audit-bed-2",
+          "sowDate": "2026-03-19T14:33:03.130Z",
+          "transplantDate": null,
+          "expectedHarvestDate": null,
+          "actualHarvestDate": null,
+          "quantity": 8,
+          "status": "transplanted",
+          "notes": "updated via audit",
+          "createdAt": "2026-03-19T14:33:03.104Z",
+          "updatedAt": "2026-03-19T14:33:03.133Z",
+          "plant": {
+            "id": "568905b6-6eb9-4207-bc99-56bd7376cf5a",
+            "name": "Audit Plant audit-1773930783039 Updated",
+            "variety": "Improved",
+            "category": "vegetable",
+            "description": null,
+            "sowIndoorStart": null,
+            "sowIndoorEnd": null,
+            "sowOutdoorStart": 3,
+            "sowOutdoorEnd": 5,
+            "harvestStart": 7,
+            "harvestEnd": 10,
+            "daysToGerminate": null,
+            "daysToHarvest": 95,
+            "spacingCm": null,
+            "depthCm": null,
+            "notes": "created by endpoint audit",
+            "imageUrl": null,
+            "createdAt": "2026-03-19T14:33:03.045Z",
+            "updatedAt": "2026-03-19T14:33:03.064Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "POST /api/gardening/tasks (auth)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 11,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039",
+          "description": "Endpoint audit task",
+          "dueDate": "2026-03-20T14:33:03.143Z",
+          "completed": false,
+          "completedAt": null,
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.146Z"
+        }
+      }
+    },
+    {
+      "name": "GET /api/gardening/tasks/39f7b330-5b4a-46b1-a892-f331e7528e5c",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 5,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039",
+          "description": "Endpoint audit task",
+          "dueDate": "2026-03-20T14:33:03.143Z",
+          "completed": false,
+          "completedAt": null,
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.146Z",
+          "completions": []
+        }
+      }
+    },
+    {
+      "name": "PUT /api/gardening/tasks/39f7b330-5b4a-46b1-a892-f331e7528e5c",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039 Updated",
+          "description": "Endpoint audit task updated",
+          "dueDate": "2026-03-21T14:33:03.159Z",
+          "completed": false,
+          "completedAt": null,
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.162Z"
+        }
+      }
+    },
+    {
+      "name": "PATCH /api/gardening/tasks (complete=true)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039 Updated",
+          "description": "Endpoint audit task updated",
+          "dueDate": "2026-03-21T14:33:03.159Z",
+          "completed": true,
+          "completedAt": "2026-03-19T14:33:03.173Z",
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.174Z"
+        }
+      }
+    },
+    {
+      "name": "PATCH /api/gardening/tasks (complete=false)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039 Updated",
+          "description": "Endpoint audit task updated",
+          "dueDate": "2026-03-21T14:33:03.159Z",
+          "completed": false,
+          "completedAt": null,
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.186Z"
+        }
+      }
+    },
+    {
+      "name": "PATCH /api/gardening/tasks (complete omitted defaults true)",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "task": {
+          "id": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "title": "Audit Task audit-1773930783039 Updated",
+          "description": "Endpoint audit task updated",
+          "dueDate": "2026-03-21T14:33:03.159Z",
+          "completed": true,
+          "completedAt": "2026-03-19T14:33:03.197Z",
+          "recurring": "weekly",
+          "archivedAt": null,
+          "createdAt": "2026-03-19T14:33:03.146Z",
+          "updatedAt": "2026-03-19T14:33:03.198Z"
+        }
+      }
+    },
+    {
+      "name": "PATCH /api/gardening/tasks/39f7b330-5b4a-46b1-a892-f331e7528e5c/complete",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 13,
+      "body": {
+        "success": true,
+        "completion": {
+          "id": "793f88b0-17af-4ba1-b402-093368b70433",
+          "taskId": "39f7b330-5b4a-46b1-a892-f331e7528e5c",
+          "completedAt": "2026-03-19T14:33:03.211Z",
+          "date": "2026-03-19T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "POST /api/gardening/tasks/batch-complete",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "success": true,
+        "updated": {
+          "recurring": 1,
+          "oneOff": 0
+        }
+      }
+    },
+    {
+      "name": "DELETE /api/gardening/tasks/39f7b330-5b4a-46b1-a892-f331e7528e5c",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 12,
+      "body": {
+        "success": true
+      }
+    },
+    {
+      "name": "DELETE /api/gardening/seeds/3a9d8b81-8cf8-4c90-9528-88dfe9060578",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 13,
+      "body": {
+        "success": true
+      }
+    },
+    {
+      "name": "DELETE /api/gardening/plantings/26d77f39-ac7f-44c9-8a86-d4141cee7e78",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 16,
+      "body": {
+        "success": true
+      }
+    },
+    {
+      "name": "DELETE /api/gardening/plants/568905b6-6eb9-4207-bc99-56bd7376cf5a",
+      "ok": true,
+      "status": 200,
+      "expectedStatuses": [
+        200
+      ],
+      "ms": 18,
+      "body": {
+        "success": true
+      }
+    }
+  ]
+}

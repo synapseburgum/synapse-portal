@@ -1,12 +1,77 @@
 import Link from 'next/link'
-import { AlertTriangle, Bot, CheckSquare, ChevronRight, CloudSun, RefreshCw } from 'lucide-react'
-import { getTodaySummary } from '@/lib/today'
+import { AlertTriangle, Bot, CheckSquare, ChevronRight, CloudSun, RefreshCw, Calendar, Activity, Clock, Zap, ArrowRight, Layers } from 'lucide-react'
+import { getTodaySummary, TodayPriority, TimeHorizon } from '@/lib/today'
 import TelegramDraftCard from '@/components/today/TelegramDraftCard'
+import QuickTaskComplete from '@/components/today/QuickTaskComplete'
+import QuickCapture from '@/components/today/QuickCapture'
 
 export const revalidate = 0
 
 function levelBadge(level: 'high' | 'medium') {
   return level === 'high' ? 'badge error' : 'badge warning'
+}
+
+function formatTime(date: Date): string {
+  return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+}
+
+function getScoreColor(score: number): string {
+  if (score >= 80) return 'var(--error)'
+  if (score >= 60) return 'var(--warning)'
+  if (score >= 40) return 'var(--accent)'
+  return 'var(--text-muted)'
+}
+
+type HorizonItems = TodayPriority[]
+
+function HorizonSection({ 
+  title, 
+  icon, 
+  items, 
+  emptyMessage 
+}: { 
+  title: string
+  icon: React.ReactNode
+  items: HorizonItems
+  emptyMessage: string
+}) {
+  if (items.length === 0) {
+    return (
+      <div className="horizon-section-empty">
+        <div className="horizon-section-empty-text">{emptyMessage}</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
+      {items.map((item) => (
+        <Link key={item.id} href={item.href} className={`brief-priority-item ${item.level === 'high' ? 'high' : 'medium'}`}>
+          <div className="brief-priority-main">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+              <strong>{item.title}</strong>
+              <span 
+                className="priority-score" 
+                style={{ 
+                  fontSize: 'var(--text-xs)', 
+                  color: getScoreColor(item.score),
+                  fontWeight: 600,
+                }}
+                title={`Priority score: ${item.score}/100`}
+              >
+                {item.score}
+              </span>
+            </div>
+            <span className="why-it-matters">{item.whyItMatters}</span>
+          </div>
+          <span style={{ display: 'inline-flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+            <span className={levelBadge(item.level)}>{item.level}</span>
+            <ChevronRight size={16} />
+          </span>
+        </Link>
+      ))}
+    </div>
+  )
 }
 
 export default async function TodayPage() {
@@ -16,16 +81,17 @@ export default async function TodayPage() {
     <div className="container">
       <header className="section-header" style={{ marginTop: 'var(--space-4)', marginBottom: 'var(--space-6)' }}>
         <div>
-          <h1 style={{ marginBottom: 'var(--space-1)' }}>Today</h1>
-          <p className="text-muted mb-0">One-screen morning command center for mobile triage.</p>
+          <h1 style={{ marginBottom: 'var(--space-1)' }}>{summary.greeting}, Tim</h1>
+          <p className="text-muted mb-0">{summary.dateLabel}</p>
         </div>
       </header>
 
+      {/* Quick Stats Bar */}
       <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
         <div className="brief-stats-grid">
           <div className="brief-stat-card">
             <div className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>Overdue</div>
-            <div style={{ fontSize: 'var(--text-2xl)', lineHeight: 1.1 }}>{summary.counts.overdue}</div>
+            <div style={{ fontSize: 'var(--text-2xl)', lineHeight: 1.1, color: summary.counts.overdue > 0 ? 'var(--error)' : 'var(--text-primary)' }}>{summary.counts.overdue}</div>
           </div>
           <div className="brief-stat-card">
             <div className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>Due today</div>
@@ -33,7 +99,7 @@ export default async function TodayPage() {
           </div>
           <div className="brief-stat-card">
             <div className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>Offline agents</div>
-            <div style={{ fontSize: 'var(--text-2xl)', lineHeight: 1.1 }}>{summary.counts.offlineAgents}</div>
+            <div style={{ fontSize: 'var(--text-2xl)', lineHeight: 1.1, color: summary.counts.offlineAgents > 0 ? 'var(--warning)' : 'var(--text-primary)' }}>{summary.counts.offlineAgents}</div>
           </div>
           <div className="brief-stat-card">
             <div className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>Unread alerts</div>
@@ -42,31 +108,153 @@ export default async function TodayPage() {
         </div>
       </section>
 
+      {/* NOW Section - Immediate Priorities */}
       <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="card">
-          <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-            <h2 className="card-title">Priority queue</h2>
+        <div className="card horizon-card horizon-now">
+          <div className="card-header horizon-header">
+            <h2 className="card-title horizon-title">
+              <span className="horizon-icon"><Zap size={18} /></span>
+              Now
+              <span className="horizon-subtitle">Immediate priorities</span>
+            </h2>
             <span className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>
-              Updated {new Date(summary.generatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {summary.horizonGroups.now.length} item{summary.horizonGroups.now.length !== 1 ? 's' : ''}
             </span>
           </div>
-          <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
-            {summary.priorities.map((item) => (
-              <Link key={item.id} href={item.href} className={`brief-priority-item ${item.level === 'high' ? 'high' : 'medium'}`}>
-                <div className="brief-priority-main">
-                  <strong>{item.title}</strong>
-                  <span>{item.detail}</span>
-                </div>
-                <span style={{ display: 'inline-flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-                  <span className={levelBadge(item.level)}>{item.level}</span>
-                  <ChevronRight size={16} />
-                </span>
-              </Link>
-            ))}
-          </div>
+          <HorizonSection 
+            title="Now" 
+            icon={<Zap size={18} />}
+            items={summary.horizonGroups.now}
+            emptyMessage="All clear! No immediate priorities right now."
+          />
         </div>
       </section>
 
+      {/* NEXT Section - This Week */}
+      <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+        <div className="card horizon-card horizon-next">
+          <div className="card-header horizon-header">
+            <h2 className="card-title horizon-title">
+              <span className="horizon-icon"><ArrowRight size={18} /></span>
+              Next
+              <span className="horizon-subtitle">Coming up this week</span>
+            </h2>
+            <span className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>
+              {summary.horizonGroups.next.length} item{summary.horizonGroups.next.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+          <HorizonSection 
+            title="Next" 
+            icon={<ArrowRight size={18} />}
+            items={summary.horizonGroups.next}
+            emptyMessage="Nothing on deck for this week yet."
+          />
+        </div>
+      </section>
+
+      {/* LATER Section - Future */}
+      <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+        <div className="card horizon-card horizon-later">
+          <div className="card-header horizon-header">
+            <h2 className="card-title horizon-title">
+              <span className="horizon-icon"><Layers size={18} /></span>
+              Later
+              <span className="horizon-subtitle">Future & backlog</span>
+            </h2>
+            <span className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>
+              {summary.horizonGroups.later.length} item{summary.horizonGroups.later.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+          <HorizonSection 
+            title="Later" 
+            icon={<Layers size={18} />}
+            items={summary.horizonGroups.later}
+            emptyMessage="No future items queued. A clean slate!"
+          />
+        </div>
+      </section>
+
+      {/* Urgent Tasks Section - Quick Complete */}
+      {summary.urgentTasks.length > 0 && (
+        <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+          <div className="card todo-priority-card">
+            <div className="card-header">
+              <h2 className="card-title">
+                <CheckSquare size={18} style={{ display: 'inline', marginRight: 'var(--space-2)' }} />
+                Quick Complete
+              </h2>
+              <p className="text-muted" style={{ fontSize: 'var(--text-xs)', marginTop: 'var(--space-1)', marginBottom: 0 }}>
+                Tick off tasks without leaving this page
+              </p>
+            </div>
+            <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
+              <QuickTaskComplete tasks={summary.urgentTasks} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Today's Schedule */}
+      {summary.todayEvents.length > 0 && (
+        <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+          <div className="card">
+            <div className="card-header">
+              <h2 className="card-title">
+                <Calendar size={18} style={{ display: 'inline', marginRight: 'var(--space-2)' }} />
+                Today&apos;s Schedule
+              </h2>
+            </div>
+            <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
+              {summary.todayEvents.map((event) => (
+                <div key={event.id} className={`calendar-event event-${event.type}`}>
+                  <div className="calendar-event-title">{event.title}</div>
+                  <div className="calendar-event-row">
+                    {event.time && (
+                      <div className="calendar-event-meta">
+                        <Clock size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                        {formatTime(new Date(event.time))}
+                      </div>
+                    )}
+                    {event.whyItMatters && (
+                      <div className="calendar-event-why">{event.whyItMatters}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Recent Activity */}
+      {summary.recentActivity.length > 0 && (
+        <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+          <div className="card">
+            <div className="card-header">
+              <h2 className="card-title">
+                <Activity size={18} style={{ display: 'inline', marginRight: 'var(--space-2)' }} />
+                Recent Activity
+              </h2>
+            </div>
+            <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
+              {summary.recentActivity.slice(0, 5).map((activity) => (
+                <div key={activity.id} className="brief-notification-item">
+                  <div className="brief-notification-icon">
+                    {activity.type === 'agent' ? <Bot size={14} /> : <Activity size={14} />}
+                  </div>
+                  <div className="brief-notification-main">
+                    <strong>{activity.title}</strong>
+                    {activity.message && <span>{activity.message}</span>}
+                    <small>{new Date(activity.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Quick Actions Grid */}
       <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
         <div className="today-action-grid">
           <Link href="/gardening/tasks" className="today-action-card">
@@ -100,6 +288,7 @@ export default async function TodayPage() {
         </div>
       </section>
 
+      {/* Weather Check */}
       <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
         {summary.weather ? (
           <div className="card">
@@ -118,6 +307,12 @@ export default async function TodayPage() {
         )}
       </section>
 
+      {/* Quick Capture */}
+      <section className="section" style={{ marginBottom: 'var(--space-6)' }}>
+        <QuickCapture />
+      </section>
+
+      {/* Telegram Draft */}
       <section className="section">
         <TelegramDraftCard draft={summary.telegramDraft} />
       </section>

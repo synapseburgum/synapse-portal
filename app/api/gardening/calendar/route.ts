@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
     const [tasks, plantings, plants] = await Promise.all([
       prisma.gardenTask.findMany({
         where: {
+          archivedAt: null,
           dueDate: { gte: from, lte: to },
         },
       }),

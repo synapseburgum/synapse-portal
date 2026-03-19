@@ -1,27 +1,75 @@
 import Link from 'next/link'
-import { 
-  Sprout, 
-  Calendar, 
-  Package, 
+import { revalidatePath } from 'next/cache'
+import {
+  Sprout,
+  Calendar,
+  Package,
   CheckSquare,
   Plus,
   ChevronRight,
-  Leaf
+  Leaf,
+  AlertTriangle,
+  Clock,
 } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import GardeningDashboardClient from '@/components/gardening/GardeningDashboardClient'
+
+type CriticalTodo = {
+  id: string
+  title: string
+  dueDate: Date
+  recurring: string | null
+  urgency: 'critical' | 'high' | 'medium' | 'low'
+  label: string
+}
+
+function classifyTaskUrgency(dueDate: Date): Pick<CriticalTodo, 'urgency' | 'label'> {
+  const now = new Date()
+  const startToday = new Date(now)
+  startToday.setHours(0, 0, 0, 0)
+
+  const due = new Date(dueDate)
+  const dueStart = new Date(due)
+  dueStart.setHours(0, 0, 0, 0)
+
+  const diffDays = Math.floor((dueStart.getTime() - startToday.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (diffDays < 0) return { urgency: 'critical', label: 'Overdue' }
+  if (diffDays === 0) return { urgency: 'critical', label: 'Due today' }
+  if (diffDays <= 2) return { urgency: 'high', label: 'Due soon' }
+  if (diffDays <= 7) return { urgency: 'medium', label: 'This week' }
+  return { urgency: 'low', label: 'Planned' }
+}
 
 async function getGardeningData() {
   const today = new Date()
+  const selectedDay = new Date(today)
+  selectedDay.setHours(0, 0, 0, 0)
+
   const thirtyDaysFromNow = new Date(today)
   thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
-  
+
+  const criticalWindow = new Date(today)
+  criticalWindow.setDate(criticalWindow.getDate() + 14)
+
   try {
-    const [plants, upcomingTasks, activePlantings, seedInventory] = await Promise.all([
+    const [plants, upcomingTasks, criticalTaskRows, activePlantings, seedInventory] = await Promise.all([
       prisma.gardenPlant.count(),
       prisma.gardenTask.findMany({
-        where: { completed: false, dueDate: { gte: today, lte: thirtyDaysFromNow } },
+        where: { archivedAt: null, completed: false, dueDate: { gte: today, lte: thirtyDaysFromNow } },
         orderBy: { dueDate: 'asc' },
+        include: {
+          completions: {
+            where: { date: selectedDay },
+            take: 1,
+          },
+        },
         take: 5,
+      }),
+      prisma.gardenTask.findMany({
+        where: { archivedAt: null, completed: false, dueDate: { lte: criticalWindow } },
+        orderBy: { dueDate: 'asc' },
+        take: 8,
       }),
       prisma.gardenPlanting.findMany({
         where: { status: { in: ['sown', 'germinated', 'transplanted', 'growing'] } },
@@ -35,16 +83,47 @@ async function getGardeningData() {
         take: 10,
       }),
     ])
-    
-    return { plants, upcomingTasks, activePlantings, seedInventory }
+
+    const criticalTodos: CriticalTodo[] = criticalTaskRows.map((task) => {
+      const urgency = classifyTaskUrgency(task.dueDate)
+      return {
+        id: task.id,
+        title: task.title,
+        dueDate: task.dueDate,
+        recurring: task.recurring,
+        urgency: urgency.urgency,
+        label: urgency.label,
+      }
+    })
+
+    return { plants, upcomingTasks, activePlantings, seedInventory, criticalTodos }
   } catch (error) {
-    return { plants: 0, upcomingTasks: [], activePlantings: [], seedInventory: [] }
+    return { plants: 0, upcomingTasks: [], activePlantings: [], seedInventory: [], criticalTodos: [] }
   }
 }
 
 export default async function GardeningPage() {
-  const { plants, upcomingTasks, activePlantings, seedInventory } = await getGardeningData()
-  
+  const { plants, upcomingTasks, activePlantings, seedInventory, criticalTodos } = await getGardeningData()
+
+  async function archiveTaskAction(formData: FormData) {
+    'use server'
+
+    const id = String(formData.get('id') || '').trim()
+    if (!id) return
+
+    await prisma.gardenTask.update({
+      where: { id },
+      data: { archivedAt: new Date() },
+    })
+
+    revalidatePath('/gardening')
+    revalidatePath('/gardening/tasks')
+    revalidatePath('/gardening/calendar')
+  }
+
+  const criticalCount = criticalTodos.filter((task) => task.urgency === 'critical').length
+  const todayIso = new Date().toISOString()
+
   return (
     <div className="container">
       {/* Header */}
@@ -94,6 +173,57 @@ export default async function GardeningPage() {
           </div>
         </div>
       </section>
+
+      {/* Critical TODOs */}
+      <section className="section">
+        <div className="card todo-priority-card">
+          <div className="card-header todo-priority-header">
+            <div>
+              <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                <AlertTriangle style={{ width: 18, height: 18, color: 'var(--error)' }} />
+                Priority Garden TODOs
+              </h3>
+              <p className="text-muted mb-0" style={{ fontSize: 'var(--text-sm)', marginTop: 'var(--space-1)' }}>
+                Colour-coded by urgency so the must-do jobs stand out.
+              </p>
+            </div>
+            <div className="todo-priority-meta">
+              {criticalCount > 0 ? <span className="badge error">{criticalCount} critical</span> : <span className="badge success">No critical tasks</span>}
+              <Link href="/gardening/tasks" className="btn btn-outline" style={{ padding: 'var(--space-2) var(--space-3)' }}>
+                Open all tasks
+              </Link>
+            </div>
+          </div>
+
+          <div className="card-body">
+            {criticalTodos.length === 0 ? (
+              <div className="empty-state" style={{ padding: 'var(--space-6)' }}>
+                <div className="empty-state-icon">
+                  <Clock />
+                </div>
+                <p className="empty-state-text">No urgent gardening tasks in the next two weeks.</p>
+              </div>
+            ) : (
+              <div className="todo-priority-stack">
+                {criticalTodos.map((task) => (
+                  <div key={task.id} className={`todo-priority-item urgency-${task.urgency}`}>
+                    <div className="todo-priority-main">
+                      <strong>{task.title}</strong>
+                      <span>
+                        Due {task.dueDate.toLocaleDateString()} {task.recurring ? `• ${task.recurring}` : '• one-off'}
+                      </span>
+                    </div>
+                    <span className={`badge ${task.urgency === 'critical' ? 'error' : task.urgency === 'high' ? 'warning' : task.urgency === 'medium' ? 'info' : 'accent'}`}>
+                      {task.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
 
       {/* Navigation Cards */}
       <section className="section">
@@ -161,32 +291,11 @@ export default async function GardeningPage() {
                 <h3 className="card-title">Upcoming Tasks</h3>
               </div>
               <div className="card-body">
-                {upcomingTasks.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-state-icon">
-                      <CheckSquare />
-                    </div>
-                    <p className="empty-state-text">No upcoming tasks</p>
-                  </div>
-                ) : (
-                  <div>
-                    {upcomingTasks.map((task) => (
-                      <div key={task.id} className="list-item">
-                        <div className="list-item-content">
-                          <div className="list-item-title">{task.title}</div>
-                          <div className="list-item-meta">
-                            {task.dueDate.toLocaleDateString()}
-                          </div>
-                        </div>
-                        <span className="badge muted">{task.recurring || 'once'}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <GardeningDashboardClient initialTasks={upcomingTasks} dateIso={todayIso} archiveAction={archiveTaskAction} />
               </div>
             </div>
           </div>
-          
+
           <div className="col-12 col-lg-6">
             <div className="card h-100">
               <div className="card-header">

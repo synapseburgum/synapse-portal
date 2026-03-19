@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { Check } from 'lucide-react'
 
 interface TaskCheckboxProps {
@@ -12,6 +12,10 @@ interface TaskCheckboxProps {
 export default function TaskCheckbox({ taskId, checked, date }: TaskCheckboxProps) {
   const [isChecked, setIsChecked] = useState(checked)
   const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    setIsChecked(checked)
+  }, [checked])
 
   const onToggle = () => {
     const next = !isChecked

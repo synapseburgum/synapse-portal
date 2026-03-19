@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import { revalidatePath } from 'next/cache'
 import { Plus } from 'lucide-react'
 import { prisma } from '@/lib/db'
 import TaskItem from '@/components/gardening/TaskItem'
+import QuickTaskComposer from '@/components/gardening/QuickTaskComposer'
 
 function normalizeDate(date: Date) {
   const d = new Date(date)
@@ -14,6 +16,7 @@ async function getTasks(dateStr?: string) {
 
   try {
     const tasks = await prisma.gardenTask.findMany({
+      where: { archivedAt: null },
       orderBy: [{ dueDate: 'asc' }, { createdAt: 'desc' }],
       include: {
         completions: {
@@ -39,6 +42,22 @@ export default async function TasksPage({
   const mode = params.mode === 'all' ? 'all' : 'today'
   const { tasks, selectedDate } = await getTasks(params.date)
 
+  async function archiveTaskAction(formData: FormData) {
+    'use server'
+
+    const id = String(formData.get('id') || '').trim()
+    if (!id) return
+
+    await prisma.gardenTask.update({
+      where: { id },
+      data: { archivedAt: new Date() },
+    })
+
+    revalidatePath('/gardening')
+    revalidatePath('/gardening/tasks')
+    revalidatePath('/gardening/calendar')
+  }
+
   const visibleTasks = tasks.filter((task) => {
     if (mode === 'all') return true
     const due = normalizeDate(task.dueDate)
@@ -59,14 +78,20 @@ export default async function TasksPage({
       </header>
 
       <section className="section">
-        <div className="category-filter-wrapper">
-          <Link href="/gardening/tasks" className={`category-filter-btn ${mode === 'today' ? 'active' : ''}`}>
-            Today / Due
-          </Link>
-          <Link href="/gardening/tasks?mode=all" className={`category-filter-btn ${mode === 'all' ? 'active' : ''}`}>
-            All Tasks
-          </Link>
+        <div className="category-filter-wrapper" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--space-3)' }}>
+          <div className="category-filter" style={{ margin: 0 }}>
+            <Link href="/gardening/tasks" className={`category-filter-btn ${mode === 'today' ? 'active' : ''}`}>
+              Today / Due
+            </Link>
+            <Link href="/gardening/tasks?mode=all" className={`category-filter-btn ${mode === 'all' ? 'active' : ''}`}>
+              All Tasks
+            </Link>
+          </div>
         </div>
+      </section>
+
+      <section className="section">
+        <QuickTaskComposer />
       </section>
 
       <section className="section">
@@ -94,6 +119,7 @@ export default async function TasksPage({
                   recurring={task.recurring}
                   completedForDate={task.recurring ? task.completions.length > 0 : task.completed}
                   date={selectedDate.toISOString()}
+                  archiveAction={archiveTaskAction}
                 />
               ))
             )}

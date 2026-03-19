@@ -7,12 +7,15 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const completed = searchParams.get('completed')
   const upcoming = searchParams.get('upcoming') === 'true'
+  const includeArchived = searchParams.get('includeArchived') === 'true'
   
   try {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     
-    const where: any = {}
+    const where: any = {
+      archivedAt: includeArchived ? undefined : null,
+    }
     
     if (completed !== null) {
       where.completed = completed === 'true'
@@ -69,12 +72,18 @@ export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json()
     const { id, completed } = body
+
+    if (!id || typeof id !== 'string') {
+      return NextResponse.json({ error: 'Task id is required' }, { status: 400 })
+    }
+
+    const nextCompleted = typeof completed === 'boolean' ? completed : true
     
     const task = await prisma.gardenTask.update({
       where: { id },
       data: {
-        completed: completed ?? true,
-        completedAt: completed ? new Date() : null,
+        completed: nextCompleted,
+        completedAt: nextCompleted ? new Date() : null,
       },
     })
     

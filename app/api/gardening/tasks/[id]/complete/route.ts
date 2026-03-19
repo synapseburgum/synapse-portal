@@ -19,7 +19,7 @@ export async function PATCH(
     const completed = body.completed !== false
     const date = normalizeToDay(body.date)
 
-    const task = await prisma.gardenTask.findUnique({ where: { id } })
+    const task = await prisma.gardenTask.findFirst({ where: { id, archivedAt: null } })
     if (!task) {
       return NextResponse.json({ error: 'Task not found' }, { status: 404 })
     }

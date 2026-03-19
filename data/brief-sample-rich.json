@@ -1,0 +1,29 @@
+{
+  "date": "2026-03-19",
+  "title": "Daily UK Education Brief",
+  "summary": "DfE attendance pilots, OCR Physics resources, and AI classroom tools.",
+  "sections": [
+    {
+      "title": "Education News",
+      "summary": "DfE announced additional guidance for attendance tracking pilots.",
+      "details": "The Department for Education has released new guidance for the attendance tracking pilot programme. **Key points:**\n\n- 12 MATs participating in the initial phase\n- Focus on persistent absence intervention\n- Data sharing agreements required by April 30th\n\nThis could impact how schools report attendance data to central authorities.",
+      "tags": ["policy", "attendance"],
+      "links": [
+        { "title": "DfE Guidance Document", "url": "https://www.gov.uk/government/organisations/department-for-education" }
+      ]
+    },
+    {
+      "title": "Physics Updates",
+      "summary": "OCR-aligned practical skill resources trending in teacher forums.",
+      "details": "Teacher communities are sharing new resources focused on OCR A-Level Physics practical skills. The *required practicals* for 2026 exams have some subtle changes from previous years.\n\nPopular resources this week:\n- Practical skill reinforcement worksheets\n- Video demonstrations of core experiments\n- Mark scheme analysis for practical questions",
+      "tags": ["physics", "resources"],
+      "links": [
+        { "title": "Physics World Discussion", "url": "https://physicsworld.com" }
+      ]
+    }
+  ],
+  "sources": [
+    { "title": "BBC Education", "url": "https://www.bbc.co.uk/news/education" }
+  ],
+  "generatedAt": "2026-03-19T14:00:00Z"
+}

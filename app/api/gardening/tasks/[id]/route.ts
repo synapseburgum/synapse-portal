@@ -9,8 +9,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const task = await prisma.gardenTask.findUnique({
-      where: { id },
+    const task = await prisma.gardenTask.findFirst({
+      where: { id, archivedAt: null },
       include: { completions: { orderBy: { date: 'desc' }, take: 14 } },
     })
 

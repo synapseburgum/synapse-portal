@@ -15,13 +15,14 @@
     "db:seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "next": "^15.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "@prisma/client": "^6.5.0",
     "bootstrap": "^5.3.3",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.483.0",
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

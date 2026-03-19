@@ -1,9 +1,17 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 
+export type BriefLink = {
+  title: string
+  url: string
+}
+
 export type BriefSection = {
   title: string
-  content: string
+  summary: string
+  details?: string
+  links?: BriefLink[]
+  tags?: string[]
 }
 
 export type BriefSource = {
@@ -38,6 +46,31 @@ export async function ensureBriefsDir() {
   await fs.mkdir(BRIEFS_DIR, { recursive: true })
 }
 
+function parseLinks(input: unknown): BriefLink[] | undefined {
+  if (!Array.isArray(input)) return undefined
+
+  const parsed: BriefLink[] = []
+  for (const item of input) {
+    if (!item || typeof item !== 'object') return undefined
+    const obj = item as Record<string, unknown>
+    const title = String(obj.title || '').trim()
+    const url = String(obj.url || '').trim()
+    if (!title || !url) return undefined
+    parsed.push({ title, url })
+  }
+
+  return parsed.length > 0 ? parsed : undefined
+}
+
+function parseTags(input: unknown): string[] | undefined {
+  if (!Array.isArray(input)) return undefined
+  const tags = input
+    .map((item) => String(item || '').trim())
+    .filter(Boolean)
+
+  return tags.length > 0 ? tags : undefined
+}
+
 export function validateBriefPayload(input: unknown): { ok: true; data: DailyBriefPayload } | { ok: false; error: string } {
   if (!input || typeof input !== 'object') return { ok: false, error: 'Payload must be a JSON object' }
 
@@ -59,11 +92,28 @@ export function validateBriefPayload(input: unknown): { ok: true; data: DailyBri
 
   const parsedSections: BriefSection[] = []
   for (const section of sections) {
-    if (!section || typeof section !== 'object') return { ok: false, error: 'sections must be objects with title/content' }
-    const titleValue = String((section as Record<string, unknown>).title || '').trim()
-    const contentValue = String((section as Record<string, unknown>).content || '').trim()
-    if (!titleValue || !contentValue) return { ok: false, error: 'each section must include title and content' }
-    parsedSections.push({ title: titleValue, content: contentValue })
+    if (!section || typeof section !== 'object') return { ok: false, error: 'sections must be objects with title/summary' }
+
+    const sectionObj = section as Record<string, unknown>
+    const titleValue = String(sectionObj.title || '').trim()
+
+    // Backward compatibility: old payloads use `content`; map to summary.
+    const summaryValue = String(sectionObj.summary || sectionObj.content || '').trim()
+    const detailsValue = typeof sectionObj.details === 'string' ? sectionObj.details.trim() : ''
+    const linksValue = parseLinks(sectionObj.links)
+    const tagsValue = parseTags(sectionObj.tags)
+
+    if (!titleValue || !summaryValue) {
+      return { ok: false, error: 'each section must include title and summary (or legacy content)' }
+    }
+
+    parsedSections.push({
+      title: titleValue,
+      summary: summaryValue,
+      ...(detailsValue ? { details: detailsValue } : {}),
+      ...(linksValue ? { links: linksValue } : {}),
+      ...(tagsValue ? { tags: tagsValue } : {}),
+    })
   }
 
   const parsedSources: BriefSource[] = []
@@ -100,7 +150,10 @@ export async function readBriefByDate(date: string): Promise<DailyBriefPayload |
 
   try {
     const file = await fs.readFile(briefFilePath(date), 'utf8')
-    return JSON.parse(file) as DailyBriefPayload
+    const raw = JSON.parse(file)
+    const validated = validateBriefPayload(raw)
+    if (!validated.ok) return null
+    return validated.data
   } catch {
     return null
   }

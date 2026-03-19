@@ -1,0 +1,36 @@
+Autonomous Synapse Portal implementation sprint.
+
+Target app:
+- Synapse Portal
+- Port: 3456
+- Repo: /home/tim-burgum/.openclaw/workspace-main/synapse-portal
+
+Mission:
+Continue implementing the approved improvement plan for:
+1) Today tab usefulness overhaul
+2) Gardening plot drawing / sowing map capability
+
+Rules:
+- Work autonomously for this sprint window.
+- Start by checking what is already implemented before making changes.
+- Prioritise shippable increments over broad rewrites.
+- Validate changes with build/tests where practical.
+- After THIS sprint window, send a progress update to Discord channel 1483886986426056805 (#appdevelopment) via main-session relay or Discord-capable path.
+- If the whole plan is completed, notify agent:main:main so Tim can be told on Telegram.
+- If the whole plan is completed early, remove any remaining cron jobs named with prefix `sp-autosprint-20260319-` so no extra jobs remain.
+- Do not leave cron jobs running after completion.
+
+Recommended sprint sequence:
+- Sprint 1: Today v2 information architecture (Now / Next / Later), scoring, clearer usefulness
+- Sprint 2: Today quick actions (complete, snooze, reschedule hooks)
+- Sprint 3: Gardening plot data model + scaffold pages/APIs
+- Sprint 4: Plot drawing MVP (simple rectangle/zones)
+- Sprint 5: Planting placement on plots + status colours
+- Sprint 6: Polish, validate, cleanup, final report
+
+At the end of the sprint:
+- Summarise what changed
+- State validation result
+- State next step
+- Post Discord update
+- If finished, notify main agent for Telegram update and clean remaining cron jobs
