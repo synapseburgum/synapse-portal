@@ -1,56 +1,187 @@
+'use client'
+
 import { ArrowLeft, Plus, MapPin, Edit, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { prisma } from '@/lib/db'
-import { notFound } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback } from 'react'
+import PlotCanvas, { type Plot, type Bed } from '@/components/gardening/PlotCanvas'
+import BedEditor from '@/components/gardening/BedEditor'
 
-async function getPlot(id: string) {
-  try {
-    const plot = await prisma.gardenPlot.findUnique({
-      where: { id },
-      include: {
-        beds: {
-          include: {
-            _count: { select: { plantings: true } },
-          },
-          orderBy: { name: 'asc' },
-        },
-      },
-    })
-    return plot
-  } catch {
-    return null
-  }
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'dev-key'
+
+const locationLabels: Record<string, string> = {
+  backyard: 'Backyard',
+  allotment: 'Allotment',
+  balcony: 'Balcony',
+  greenhouse: 'Greenhouse',
+  indoor: 'Indoor',
 }
 
-export default async function PlotDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-  const plot = await getPlot(id)
-
-  if (!plot) {
-    notFound()
+export default function PlotDetailPage() {
+  const params = useParams()
+  const router = useRouter()
+  const plotId = params.id as string
+  
+  const [plot, setPlot] = useState<Plot | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedBedId, setSelectedBedId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'canvas' | 'list'>('canvas')
+  
+  const fetchPlot = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/gardening/plots/${plotId}`)
+      if (!response.ok) {
+        if (response.status === 404) {
+          setError('Plot not found')
+        } else {
+          setError('Failed to load plot')
+        }
+        return
+      }
+      
+      const data = await response.json()
+      setPlot(data.plot)
+    } catch (err) {
+      console.error('Failed to fetch plot:', err)
+      setError('Failed to load plot')
+    } finally {
+      setLoading(false)
+    }
+  }, [plotId])
+  
+  useEffect(() => {
+    fetchPlot()
+  }, [fetchPlot])
+  
+  const handleAddBed = async (x: number, y: number) => {
+    try {
+      const response = await fetch(`/api/gardening/plots/${plotId}/beds`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+        body: JSON.stringify({
+          name: `Bed ${plot?.beds.length ? plot.beds.length + 1 : 1}`,
+          x: Math.max(0, x),
+          y: Math.max(0, y),
+          width: 1,
+          height: 1,
+          soilType: null,
+        }),
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setPlot(prev => prev ? {
+          ...prev,
+          beds: [...prev.beds, data.bed],
+        } : prev)
+        setSelectedBedId(data.bed.id)
+      }
+    } catch (err) {
+      console.error('Failed to add bed:', err)
+    }
   }
-
-  const locationLabels: Record<string, string> = {
-    backyard: 'Backyard',
-    allotment: 'Allotment',
-    balcony: 'Balcony',
-    greenhouse: 'Greenhouse',
-    indoor: 'Indoor',
+  
+  const handleUpdateBed = async (bedId: string, updates: Partial<Bed>) => {
+    // Optimistic update
+    setPlot(prev => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        beds: prev.beds.map(bed => 
+          bed.id === bedId ? { ...bed, ...updates } : bed
+        ),
+      }
+    })
+    
+    try {
+      const response = await fetch(`/api/gardening/plots/${plotId}/beds/${bedId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+        body: JSON.stringify(updates),
+      })
+      
+      if (!response.ok) {
+        // Revert on error
+        fetchPlot()
+      }
+    } catch (err) {
+      console.error('Failed to update bed:', err)
+      fetchPlot()
+    }
   }
-
-  const soilTypeLabels: Record<string, string> = {
-    clay: 'Clay',
-    sandy: 'Sandy',
-    loam: 'Loam',
-    'compost-rich': 'Compost-Rich',
-    chalky: 'Chalky',
-    silty: 'Silty',
+  
+  const handleDeleteBed = async (bedId: string) => {
+    try {
+      const response = await fetch(`/api/gardening/plots/${plotId}/beds/${bedId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+      })
+      
+      if (response.ok) {
+        setPlot(prev => {
+          if (!prev) return prev
+          return {
+            ...prev,
+            beds: prev.beds.filter(bed => bed.id !== bedId),
+          }
+        })
+        setSelectedBedId(null)
+      }
+    } catch (err) {
+      console.error('Failed to delete bed:', err)
+    }
   }
-
+  
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="section" style={{ marginTop: 'var(--space-4)' }}>
+          <div className="card">
+            <div className="card-body" style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
+              <p className="text-muted">Loading plot...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  if (error || !plot) {
+    return (
+      <div className="container">
+        <div className="section" style={{ marginTop: 'var(--space-4)' }}>
+          <div className="card">
+            <div className="card-body">
+              <div className="empty-state">
+                <div className="empty-state-icon">
+                  <MapPin />
+                </div>
+                <p className="empty-state-text">
+                  {error || 'Plot not found'}
+                </p>
+                <Link href="/gardening/plots" className="btn btn-primary mt-4">
+                  <ArrowLeft />
+                  Back to Plots
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  const selectedBed = selectedBedId ? plot.beds.find(b => b.id === selectedBedId) || null : null
+  
   return (
     <div className="container">
       {/* Header */}
@@ -93,79 +224,140 @@ export default async function PlotDetailPage({
         </section>
       )}
 
-      {/* Beds Section */}
+      {/* View Toggle + Canvas/List */}
       <section className="section">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
           <h2 style={{ margin: 0 }}>Beds & Zones</h2>
-          <button className="btn btn-success">
-            <Plus />
-            <span className="hide-phone">Add Bed</span>
-          </button>
+          <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+            <button
+              onClick={() => setViewMode('canvas')}
+              className={`btn ${viewMode === 'canvas' ? 'btn-primary' : 'btn-secondary'}`}
+            >
+              Canvas
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-secondary'}`}
+            >
+              List
+            </button>
+          </div>
         </div>
 
-        {plot.beds.length === 0 ? (
-          <div className="card">
-            <div className="card-body">
-              <div className="empty-state">
-                <div className="empty-state-icon">
-                  <MapPin />
-                </div>
-                <p className="empty-state-text">
-                  No beds or zones defined yet. Add beds to organize plantings within this plot.
-                </p>
-                <button className="btn btn-primary mt-4">
-                  <Plus />
-                  Add First Bed
-                </button>
-              </div>
+        {viewMode === 'canvas' ? (
+          <div className="plot-layout">
+            <div className="plot-canvas-panel">
+              <PlotCanvas
+                plot={plot}
+                selectedBedId={selectedBedId}
+                onSelectBed={setSelectedBedId}
+                onAddBed={handleAddBed}
+                onUpdateBed={handleUpdateBed}
+              />
+            </div>
+            <div className="plot-editor-panel">
+              <BedEditor
+                bed={selectedBed}
+                onUpdate={handleUpdateBed}
+                onDelete={handleDeleteBed}
+                onClose={() => setSelectedBedId(null)}
+              />
             </div>
           </div>
         ) : (
-          <div className="apps-grid">
-            {plot.beds.map((bed) => (
-              <div key={bed.id} className="card card-hover">
+          <>
+            {plot.beds.length === 0 ? (
+              <div className="card">
                 <div className="card-body">
-                  <h3 style={{ margin: '0 0 var(--space-3) 0', fontSize: '1.125rem' }}>{bed.name}</h3>
-                  
-                  <div style={{ display: 'grid', gap: 'var(--space-2)', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                    <div>
-                      <strong>Position:</strong> ({bed.x}m, {bed.y}m)
+                  <div className="empty-state">
+                    <div className="empty-state-icon">
+                      <MapPin />
                     </div>
-                    <div>
-                      <strong>Size:</strong> {bed.width}m × {bed.height}m
-                    </div>
-                    {bed.soilType && (
-                      <div>
-                        <strong>Soil:</strong> {soilTypeLabels[bed.soilType] || bed.soilType}
-                      </div>
-                    )}
-                    <div>
-                      <strong>Plantings:</strong> {bed._count.plantings}
-                    </div>
-                    {bed.notes && (
-                      <div style={{ marginTop: 'var(--space-2)', fontStyle: 'italic' }}>
-                        {bed.notes}
-                      </div>
-                    )}
+                    <p className="empty-state-text">
+                      No beds or zones defined yet. Switch to Canvas view to add beds interactively.
+                    </p>
+                    <button 
+                      onClick={() => setViewMode('canvas')}
+                      className="btn btn-primary mt-4"
+                    >
+                      <Plus />
+                      Open Canvas
+                    </button>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            ) : (
+              <div className="apps-grid">
+                {plot.beds.map((bed) => (
+                  <div 
+                    key={bed.id} 
+                    className="card card-hover"
+                    onClick={() => {
+                      setSelectedBedId(bed.id)
+                      setViewMode('canvas')
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="card-body">
+                      <h3 style={{ margin: '0 0 var(--space-3) 0', fontSize: '1.125rem' }}>{bed.name}</h3>
+                      
+                      <div style={{ display: 'grid', gap: 'var(--space-2)', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+                        <div>
+                          <strong>Position:</strong> ({bed.x}m, {bed.y}m)
+                        </div>
+                        <div>
+                          <strong>Size:</strong> {bed.width}m × {bed.height}m
+                        </div>
+                        {bed.soilType && (
+                          <div>
+                            <strong>Soil:</strong> {bed.soilType}
+                          </div>
+                        )}
+                        <div>
+                          <strong>Plantings:</strong> {typeof bed.plantings === 'number' ? bed.plantings : (bed.plantings as any)?.count || 0}
+                        </div>
+                        {bed.notes && (
+                          <div style={{ marginTop: 'var(--space-2)', fontStyle: 'italic' }}>
+                            {bed.notes}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </section>
 
-      {/* Future: Plot Visualization */}
-      <section className="section">
-        <div className="card">
-          <div className="card-body" style={{ textAlign: 'center', padding: 'var(--space-6)', color: 'var(--text-muted)' }}>
-            <MapPin style={{ width: '3rem', height: '3rem', marginBottom: 'var(--space-3)', opacity: 0.5 }} />
-            <p style={{ margin: 0 }}>
-              Interactive plot visualization coming in Sprint 4
-            </p>
-          </div>
-        </div>
-      </section>
+      <style>{`
+        .plot-layout {
+          display: grid;
+          grid-template-columns: 1fr 320px;
+          gap: var(--space-4);
+        }
+        
+        @media (max-width: 1024px) {
+          .plot-layout {
+            grid-template-columns: 1fr;
+          }
+          
+          .plot-editor-panel {
+            order: -1;
+          }
+        }
+        
+        .plot-canvas-panel {
+          min-width: 0;
+        }
+        
+        .plot-editor-panel {
+          position: sticky;
+          top: calc(var(--navbar-height) + var(--space-4));
+          align-self: start;
+        }
+      `}</style>
     </div>
   )
 }
