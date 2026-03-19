@@ -236,6 +236,49 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 06:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a full **Agent Monitor** surface focused on Tim’s multi-agent operations.
+- Added page: **`/agents`** with live status dashboard + attention-first list.
+- Added API endpoint: **`GET /api/agents/status`** for realtime health snapshots.
+- Added client component: **`components/agents/AgentMonitorClient.tsx`** with auto-refresh + manual refresh.
+- Integrated monitor into core navigation and dashboard:
+  - New **Agents** item in top/mobile nav
+  - New **Agent Monitor** app card on home screen
+  - New quick action CTA from dashboard to monitor
+- Upgraded home dashboard metric to surface **Agents Offline** at a glance.
+
+### Why this was selected
+- Tim runs a real multi-agent setup (`main`, `clark`, `scout`, `marketing`, `dev`, `ops`, `reviewer`, `workspace`, `terminal`) and needs immediate visibility from mobile.
+- This is the highest practical overnight improvement: it cuts triage time and highlights where intervention is needed first.
+
+### Mobile-first behavior delivered
+- Status UI is card-first and readable on small screens.
+- Critical/non-active agents are shown in an attention-priority list.
+- Manual refresh is touch-friendly and always visible.
+- Auto-refresh every 45 seconds keeps the page useful as a live monitor.
+
+### Status logic delivered
+- **Active**: last event ≤ 20 minutes
+- **Idle**: 20 minutes to 3 hours
+- **Offline**: > 3 hours or no recent events
+- Last-seen and last-message preview are included per agent.
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Runtime smoke checks passed:
+  - `/agents`
+  - `/api/agents/status`
+  - dashboard and nav include Agents links
+- Verified JSON shape and route rendering via HTTP checks.
+
+### Notes
+- Browser automation remained unavailable in this environment, so validation used build + runtime HTTP smoke tests.
+- No betting/gambling/Racer functionality added.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists

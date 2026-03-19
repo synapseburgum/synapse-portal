@@ -2,7 +2,6 @@ import Link from 'next/link'
 import {
   Bell,
   Sprout,
-  TrendingUp,
   Zap,
   BarChart3,
   ExternalLink,
@@ -13,8 +12,10 @@ import {
   Plus,
   Package,
   Gauge,
+  Bot,
 } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import { getAgentHealthCounts, getAgentStatuses } from '@/lib/agents'
 
 const QUICK_LINKS = [
   {
@@ -38,15 +39,23 @@ async function getStats() {
   today.setHours(0, 0, 0, 0)
 
   try {
-    const [notifications, gardenTasks, pinnedBriefs] = await Promise.all([
+    const [notifications, gardenTasks, pinnedBriefs, agentStatuses] = await Promise.all([
       prisma.notification.count({ where: { isRead: false } }),
       prisma.gardenTask.count({ where: { completed: false, dueDate: { gte: today } } }),
       prisma.dailyBrief.count({ where: { isPinned: true } }),
+      getAgentStatuses(),
     ])
 
-    return { notifications, gardenTasks, pinnedBriefs }
+    const agentCounts = getAgentHealthCounts(agentStatuses)
+
+    return { notifications, gardenTasks, pinnedBriefs, agentCounts }
   } catch {
-    return { notifications: 0, gardenTasks: 0, pinnedBriefs: 0 }
+    return {
+      notifications: 0,
+      gardenTasks: 0,
+      pinnedBriefs: 0,
+      agentCounts: { active: 0, idle: 0, offline: 0 },
+    }
   }
 }
 
@@ -58,7 +67,7 @@ function getGreeting() {
 }
 
 export default async function HomePage() {
-  const { notifications, gardenTasks, pinnedBriefs } = await getStats()
+  const { notifications, gardenTasks, pinnedBriefs, agentCounts } = await getStats()
 
   return (
     <div className="container">
@@ -94,10 +103,10 @@ export default async function HomePage() {
           </div>
           <div className="stat-card">
             <div className="stat-icon info">
-              <Zap />
+              <Bot />
             </div>
-            <div className="stat-value">—</div>
-            <div className="stat-label">Weekly Focus</div>
+            <div className="stat-value">{agentCounts.offline}</div>
+            <div className="stat-label">Agents Offline</div>
           </div>
         </div>
       </section>
@@ -155,6 +164,18 @@ export default async function HomePage() {
               <ChevronRight />
             </span>
           </Link>
+          <Link href="/agents" className="app-card">
+            <div className="app-icon secondary">
+              <Bot />
+            </div>
+            <div className="app-content">
+              <div className="app-title">Agent Monitor</div>
+              <div className="app-description">Live status for all Synapse agents</div>
+            </div>
+            <span className="app-arrow">
+              <ChevronRight />
+            </span>
+          </Link>
           <a href="http://localhost:3477" target="_blank" rel="noreferrer" className="app-card">
             <div className="app-icon secondary">
               <Gauge />
@@ -205,6 +226,10 @@ export default async function HomePage() {
                 <Link href="/gardening/tasks/new" className="btn btn-success">
                   <Plus />
                   Add Garden Task
+                </Link>
+                <Link href="/agents" className="btn btn-outline">
+                  <Bot />
+                  Open Agent Monitor
                 </Link>
                 <Link href="/gardening/seeds" className="btn btn-outline">
                   <Package />
