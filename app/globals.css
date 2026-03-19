@@ -1725,6 +1725,117 @@ textarea.form-input {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   QUICK CAPTURE
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.quick-capture-shell {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.quick-capture-intro {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.quick-capture-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.quick-capture-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.quick-capture-textarea {
+  min-height: 120px;
+  font-size: var(--text-base);
+}
+
+.quick-capture-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.quick-capture-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+  border: 1px solid oklch(0.18 0.015 270 / 0.1);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.quick-capture-chip:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background: var(--accent-subtle);
+}
+
+.quick-capture-submit {
+  width: 100%;
+  min-height: 44px;
+}
+
+.quick-capture-result {
+  border-radius: var(--radius-md);
+  border: 1px solid oklch(0.18 0.015 270 / 0.12);
+  padding: var(--space-3);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.quick-capture-result.success {
+  border-color: oklch(0.68 0.17 150 / 0.35);
+  background: var(--success-subtle);
+}
+
+.quick-capture-result.error {
+  border-color: oklch(0.62 0.20 25 / 0.4);
+  background: var(--error-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.quick-capture-result-head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.quick-capture-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.quick-capture-result-grid small {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: block;
+}
+
+.quick-capture-result-grid div > div {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .quick-capture-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    CATEGORY FILTER
    ───────────────────────────────────────────────────────────────────────────── */
 

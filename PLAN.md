@@ -137,6 +137,55 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 05:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a new **Quick Capture Inbox** feature for fast, natural-language task capture on mobile.
+- Added new page: **`/inbox`** with phone-first capture flow and suggestion chips.
+- Added new API endpoint: **`POST /api/inbox/capture`**.
+- Added shared parser utility: **`lib/quickCapture.ts`** for lightweight intent + due-date + recurrence extraction.
+- Added client capture component: **`components/quickcapture/QuickCaptureClient.tsx`**.
+- Integrated Inbox into portal discovery:
+  - New **Inbox** item in top/mobile nav.
+  - New **Quick Capture Inbox** app card on dashboard (`/`).
+
+### Why this was selected
+- Tim’s primary workflow is message-first (Telegram), so converting rough text into structured actions is highest practical value.
+- This removes friction from mobile use: one input box, one tap, immediate task creation.
+- It complements existing Gardening + Brief + Agents surfaces without adding complexity.
+
+### Mobile-first behavior delivered
+- Full-width capture CTA with 44px+ touch target.
+- Suggestion chips for one-tap quick entry.
+- Compact feedback panel with parsed output (title/due/recurrence/confidence).
+- Single-screen-first layout for thumb use.
+
+### Capture logic delivered
+- Classifies capture text into:
+  - `garden_task` (creates `GardenTask`),
+  - fallback `notification` note (creates Notification).
+- Extracts common due hints:
+  - today / tomorrow / next week / in N days / weekday / next weekday.
+- Extracts recurrence hints:
+  - daily / weekly / monthly / every Monday-style phrasing.
+- Stores original raw capture and parser reasoning in task description for auditability.
+
+### Validation completed
+- `npm run build` passed (type-check + production build successful).
+- Endpoint smoke tests passed:
+  - `POST /api/inbox/capture` creates tasks from NL input.
+  - fallback note path creates notification entries.
+- Route checks passed:
+  - `/inbox` renders,
+  - nav includes Inbox route,
+  - dashboard includes Quick Capture card.
+
+### Notes
+- Existing `:3456` instance is still serving an older build snapshot; validation was performed on a fresh local server instance after build.
+- No betting/gambling/Racer functionality added.
+
+---
+
 ## Overnight Sprint Progress Update — 2026-03-19 04:00 (Europe/London)
 
 ### ✅ Shipped in this sprint
