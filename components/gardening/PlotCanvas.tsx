@@ -2,6 +2,23 @@
 
 import { useState, useRef, useCallback } from 'react'
 
+export interface Planting {
+  id: string
+  plantId: string
+  bedId: string | null
+  positionX: number | null
+  positionY: number | null
+  status: string
+  sowDate: string
+  quantity: number | null
+  plant: {
+    id: string
+    name: string
+    variety: string | null
+    category: string
+  }
+}
+
 export interface Bed {
   id: string
   name: string
@@ -11,7 +28,7 @@ export interface Bed {
   height: number
   soilType: string | null
   notes?: string | null
-  plantings?: { count: number } | number
+  plantings?: Planting[] | { count: number } | number
 }
 
 export interface Plot {
@@ -30,6 +47,8 @@ interface PlotCanvasProps {
   onSelectBed: (bedId: string | null) => void
   onAddBed: (x: number, y: number) => void
   onUpdateBed: (bedId: string, updates: Partial<Bed>) => void
+  onSelectPlanting?: (plantingId: string | null) => void
+  selectedPlantingId?: string | null
   readOnly?: boolean
 }
 
@@ -44,12 +63,24 @@ const SOIL_COLORS: Record<string, string> = {
 
 const DEFAULT_BED_COLOR = '#6b8e4e'
 
+const STATUS_COLORS: Record<string, { fill: string; stroke: string; label: string }> = {
+  sown: { fill: 'transparent', stroke: '#22c55e', label: 'Sown' },
+  germinated: { fill: '#86efac', stroke: '#22c55e', label: 'Germinated' },
+  growing: { fill: '#4ade80', stroke: '#16a34a', label: 'Growing' },
+  flowering: { fill: '#d946ef', stroke: '#a855f7', label: 'Flowering' },
+  fruiting: { fill: '#fb923c', stroke: '#ea580c', label: 'Fruiting' },
+  harvested: { fill: '#a8a29e', stroke: '#78716c', label: 'Harvested' },
+  failed: { fill: '#f87171', stroke: '#dc2626', label: 'Failed' },
+}
+
 export default function PlotCanvas({
   plot,
   selectedBedId,
   onSelectBed,
   onAddBed,
   onUpdateBed,
+  onSelectPlanting,
+  selectedPlantingId,
   readOnly = false,
 }: PlotCanvasProps) {
   const svgRef = useRef<SVGSVGElement>(null)
@@ -394,6 +425,39 @@ export default function PlotCanvas({
                   {bed.width}m × {bed.height}m
                 </text>
                 
+                {/* Planting markers */}
+                {Array.isArray(bed.plantings) && bed.plantings.map((planting) => {
+                  if (!planting.positionX || !planting.positionY) return null
+                  
+                  const statusConfig = STATUS_COLORS[planting.status] || STATUS_COLORS.sown
+                  const isPlantingSelected = planting.id === selectedPlantingId
+                  const cx = bed.x + planting.positionX
+                  const cy = bed.y + planting.positionY
+                  const radius = 0.08
+                  
+                  return (
+                    <g key={planting.id}>
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={radius}
+                        fill={statusConfig.fill}
+                        stroke={statusConfig.stroke}
+                        strokeWidth={isPlantingSelected ? 0.03 : 0.02}
+                        className="planting-marker"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (onSelectPlanting) {
+                            onSelectPlanting(isPlantingSelected ? null : planting.id)
+                          }
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <title>{planting.plant.name} ({statusConfig.label})</title>
+                    </g>
+                  )
+                })}
+                
                 {/* Resize handles (only when selected) */}
                 {isSelected && !readOnly && (
                   <>
@@ -551,6 +615,16 @@ export default function PlotCanvas({
         
         .resize-handle:hover {
           fill: var(--accent-hover);
+        }
+        
+        .planting-marker {
+          transition: all 0.15s var(--ease-out-expo);
+          filter: drop-shadow(0 0 0.02px oklch(0 0 0 / 0.3));
+        }
+        
+        .planting-marker:hover {
+          filter: drop-shadow(0 0 0.05px oklch(0 0 0 / 0.5)) brightness(1.2);
+          r: 0.1;
         }
         
         .scale-line {

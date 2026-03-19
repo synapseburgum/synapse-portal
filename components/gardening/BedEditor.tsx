@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { Bed } from './PlotCanvas'
+import type { Bed, Planting } from './PlotCanvas'
 
 interface BedEditorProps {
   bed: Bed | null
   onUpdate: (bedId: string, updates: Partial<Bed>) => void
   onDelete: (bedId: string) => void
   onClose: () => void
+  onSelectPlanting?: (plantingId: string | null) => void
+  selectedPlantingId?: string | null
 }
 
 const SOIL_TYPE_OPTIONS = [
@@ -20,7 +22,7 @@ const SOIL_TYPE_OPTIONS = [
   { value: 'silty', label: 'Silty' },
 ]
 
-export default function BedEditor({ bed, onUpdate, onDelete, onClose }: BedEditorProps) {
+export default function BedEditor({ bed, onUpdate, onDelete, onClose, onSelectPlanting, selectedPlantingId }: BedEditorProps) {
   const [formData, setFormData] = useState({
     name: '',
     width: '1',
@@ -205,6 +207,59 @@ export default function BedEditor({ bed, onUpdate, onDelete, onClose }: BedEdito
           </div>
         </div>
         
+        {/* Plantings List */}
+        {Array.isArray(bed.plantings) && bed.plantings.length > 0 && (
+          <div className="bed-plantings-section">
+            <h4 className="bed-plantings-title">Plantings in this bed</h4>
+            <div className="bed-plantings-list">
+              {bed.plantings.map((planting) => {
+                const statusColors: Record<string, string> = {
+                  sown: '#22c55e',
+                  germinated: '#86efac',
+                  growing: '#4ade80',
+                  flowering: '#d946ef',
+                  fruiting: '#fb923c',
+                  harvested: '#a8a29e',
+                  failed: '#f87171',
+                }
+                const statusColor = statusColors[planting.status] || '#888'
+                const isSelected = planting.id === selectedPlantingId
+                
+                return (
+                  <div
+                    key={planting.id}
+                    className={`bed-planting-item ${isSelected ? 'bed-planting-selected' : ''}`}
+                    onClick={() => {
+                      if (onSelectPlanting) {
+                        onSelectPlanting(isSelected ? null : planting.id)
+                      }
+                    }}
+                    style={{ borderLeftColor: statusColor }}
+                  >
+                    <div className="bed-planting-name">
+                      {planting.plant.name}
+                      {planting.plant.variety && (
+                        <span className="bed-planting-variety"> ({planting.plant.variety})</span>
+                      )}
+                    </div>
+                    <div className="bed-planting-status" style={{ color: statusColor }}>
+                      {planting.status}
+                    </div>
+                    {planting.positionX !== null && planting.positionY !== null && (
+                      <div className="bed-planting-position">
+                        Position: ({planting.positionX.toFixed(2)}, {planting.positionY.toFixed(2)})
+                      </div>
+                    )}
+                    <div className="bed-planting-date">
+                      Sown: {new Date(planting.sowDate).toLocaleDateString()}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+        
         {/* Actions */}
         <div className="bed-editor-actions">
           <button
@@ -312,6 +367,71 @@ export default function BedEditor({ bed, onUpdate, onDelete, onClose }: BedEdito
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
+        }
+        
+        .bed-plantings-section {
+          margin-bottom: var(--space-4);
+        }
+        
+        .bed-plantings-title {
+          font-size: var(--text-sm);
+          font-weight: 600;
+          color: var(--text-secondary);
+          margin: 0 0 var(--space-3) 0;
+        }
+        
+        .bed-plantings-list {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-2);
+          max-height: 250px;
+          overflow-y: auto;
+        }
+        
+        .bed-planting-item {
+          padding: var(--space-3);
+          background: var(--bg-sunken);
+          border-radius: var(--radius-md);
+          border-left: 3px solid;
+          cursor: pointer;
+          transition: all 0.15s var(--ease-out-expo);
+        }
+        
+        .bed-planting-item:hover {
+          background: var(--bg-elevated);
+          transform: translateX(2px);
+        }
+        
+        .bed-planting-selected {
+          background: var(--bg-elevated);
+          box-shadow: 0 0 0 2px var(--accent);
+        }
+        
+        .bed-planting-name {
+          font-weight: 600;
+          font-size: var(--text-sm);
+          color: var(--text-primary);
+          margin-bottom: var(--space-1);
+        }
+        
+        .bed-planting-variety {
+          font-weight: 400;
+          color: var(--text-muted);
+          font-size: var(--text-xs);
+        }
+        
+        .bed-planting-status {
+          font-size: var(--text-xs);
+          font-weight: 600;
+          text-transform: capitalize;
+          margin-bottom: var(--space-1);
+        }
+        
+        .bed-planting-position,
+        .bed-planting-date {
+          font-size: var(--text-xs);
+          color: var(--text-muted);
+          margin-top: var(--space-1);
         }
         
         .bed-stat-value {

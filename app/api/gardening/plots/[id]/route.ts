@@ -15,6 +15,18 @@ export async function GET(
       include: {
         beds: {
           include: {
+            plantings: {
+              include: {
+                plant: {
+                  select: {
+                    id: true,
+                    name: true,
+                    variety: true,
+                    category: true,
+                  }
+                }
+              }
+            },
             _count: { select: { plantings: true } },
           },
           orderBy: { name: 'asc' },

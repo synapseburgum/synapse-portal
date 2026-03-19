@@ -26,6 +26,7 @@ export default function PlotDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedBedId, setSelectedBedId] = useState<string | null>(null)
+  const [selectedPlantingId, setSelectedPlantingId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'canvas' | 'list'>('canvas')
   
   const fetchPlot = useCallback(async () => {
@@ -253,6 +254,8 @@ export default function PlotDetailPage() {
                 onSelectBed={setSelectedBedId}
                 onAddBed={handleAddBed}
                 onUpdateBed={handleUpdateBed}
+                onSelectPlanting={setSelectedPlantingId}
+                selectedPlantingId={selectedPlantingId}
               />
             </div>
             <div className="plot-editor-panel">
@@ -261,6 +264,8 @@ export default function PlotDetailPage() {
                 onUpdate={handleUpdateBed}
                 onDelete={handleDeleteBed}
                 onClose={() => setSelectedBedId(null)}
+                onSelectPlanting={setSelectedPlantingId}
+                selectedPlantingId={selectedPlantingId}
               />
             </div>
           </div>
