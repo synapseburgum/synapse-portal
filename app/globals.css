@@ -2329,3 +2329,71 @@ textarea.form-input {
   background: var(--accent);
   border-color: var(--accent);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HORIZON QUICK ACTIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.horizon-card {
+  position: relative;
+  transition: all var(--duration-fast) var(--ease-out-expo);
+}
+
+.horizon-card:hover {
+  transform: translateY(-1px);
+}
+
+.horizon-actions {
+  animation: slideIn var(--duration-fast) var(--ease-out-expo);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.horizon-actions .action-button {
+  transition: all var(--duration-instant) var(--ease-out-expo);
+}
+
+.horizon-actions .action-button:hover {
+  transform: scale(1.1);
+}
+
+.horizon-actions .action-button:active {
+  transform: scale(0.95);
+}
+
+.horizon-actions .action-button:disabled {
+  cursor: not-allowed;
+}
+
+/* Spin animation for loading states */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Completed state */
+.brief-priority-item.completed {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Priority item hover state */
+.brief-priority-item:hover {
+  transform: translateX(2px);
+  border-color: oklch(0.18 0.015 270 / 0.15);
+  box-shadow: var(--shadow-sm);
+}

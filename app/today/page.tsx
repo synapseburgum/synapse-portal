@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { AlertTriangle, Bot, CheckSquare, ChevronRight, CloudSun, RefreshCw, Calendar, Activity, Clock, Zap, ArrowRight, Layers } from 'lucide-react'
-import { getTodaySummary, TodayPriority, TimeHorizon } from '@/lib/today'
+import { AlertTriangle, Bot, CheckSquare, CloudSun, RefreshCw, Calendar, Activity, Clock, Zap, ArrowRight, Layers } from 'lucide-react'
+import { getTodaySummary, TodayPriority } from '@/lib/today'
 import TelegramDraftCard from '@/components/today/TelegramDraftCard'
 import QuickTaskComplete from '@/components/today/QuickTaskComplete'
 import QuickCapture from '@/components/today/QuickCapture'
+import HorizonCard from '@/components/today/HorizonCard'
 
 export const revalidate = 0
 
@@ -46,29 +47,7 @@ function HorizonSection({
   return (
     <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
       {items.map((item) => (
-        <Link key={item.id} href={item.href} className={`brief-priority-item ${item.level === 'high' ? 'high' : 'medium'}`}>
-          <div className="brief-priority-main">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-              <strong>{item.title}</strong>
-              <span 
-                className="priority-score" 
-                style={{ 
-                  fontSize: 'var(--text-xs)', 
-                  color: getScoreColor(item.score),
-                  fontWeight: 600,
-                }}
-                title={`Priority score: ${item.score}/100`}
-              >
-                {item.score}
-              </span>
-            </div>
-            <span className="why-it-matters">{item.whyItMatters}</span>
-          </div>
-          <span style={{ display: 'inline-flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-            <span className={levelBadge(item.level)}>{item.level}</span>
-            <ChevronRight size={16} />
-          </span>
-        </Link>
+        <HorizonCard key={item.id} item={item} />
       ))}
     </div>
   )
