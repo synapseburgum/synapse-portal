@@ -43,9 +43,23 @@ Open: `http://localhost:3456` (or your configured local port).
   - Track status progression (`sown → germinated → transplanted → growing → ...`)
   - Add plantings and update status from detail page
 
+## Daily Brief Features
+
+- TL;DR summary at top + expandable full briefing
+- Searchable archive (date range + content query)
+- Previous/Next day navigation
+- Jump-to-date picker
+- Export brief as `.txt`
+- Mark read/unread
+- Pin/unpin important briefs
+- Optional `audioUrl` for Clark-generated audio briefing links
+- Auto-generation of today's brief from weather + garden workload context
+
 ## Key Routes
 
 ### UI
+- `/`
+- `/brief`
 - `/gardening`
 - `/gardening/plants`
 - `/gardening/plants/new`
@@ -59,6 +73,10 @@ Open: `http://localhost:3456` (or your configured local port).
 - `/gardening/plantings`
 - `/gardening/plantings/new`
 - `/gardening/plantings/[id]`
+- `/weather`
+- `/inbox`
+
+> Agent monitor pages were removed. Use CNS directly: `http://localhost:3477`
 
 ### API
 
@@ -94,6 +112,14 @@ Open: `http://localhost:3456` (or your configured local port).
 
 #### Calendar
 - `GET /api/gardening/calendar?from=ISO&to=ISO&view=day|week|month`
+
+#### Brief
+- `GET /api/brief/daily` - today's brief (auto-generated if absent)
+- `GET /api/brief/archive?from=YYYY-MM-DD&to=YYYY-MM-DD` - archive range
+- `GET /api/brief/[date]` - specific brief by date
+- `POST /api/brief` - create/update brief (auth)
+- `PATCH /api/brief` - update read/pin flags
+- `GET /api/brief/search?q=query` - search tldr/content
 
 ## Database Seeding
 

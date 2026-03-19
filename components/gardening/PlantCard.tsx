@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ChevronRight, Flower2, Leaf, Sprout, Apple, type LucideIcon } from 'lucide-react'
+import { ChevronRight, Flower2, Leaf, Sprout, Apple } from 'lucide-react'
 import type { ComponentType } from 'react'
 
 interface PlantCardProps {

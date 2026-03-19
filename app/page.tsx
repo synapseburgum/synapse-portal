@@ -2,47 +2,33 @@ import Link from 'next/link'
 import {
   Bell,
   Sprout,
-  Bot,
-  ChevronRight,
-  Plus,
-  Package,
-  Activity,
+  TrendingUp,
+  Zap,
+  BarChart3,
   ExternalLink,
-  SquareTerminal,
-  MessageCircle,
-  Gauge,
-  CheckCircle2,
-  Clock3,
-  CircleOff,
-  Radar,
+  ChevronRight,
   Newspaper,
   CloudSun,
   MessageSquarePlus,
+  Plus,
+  Package,
+  Gauge,
 } from 'lucide-react'
-import { formatDistanceToNow } from 'date-fns'
 import { prisma } from '@/lib/db'
-import { AgentHealth, AgentStatus, getAgentStatuses } from '@/lib/agents'
 
 const QUICK_LINKS = [
+  {
+    title: 'CNS Dashboard',
+    description: 'Open CNS local dashboard',
+    href: 'http://localhost:3477',
+    icon: Gauge,
+    external: true,
+  },
   {
     title: 'Telegram',
     description: 'Primary messaging inbox',
     href: process.env.TELEGRAM_WEB_URL || 'https://web.telegram.org/a/',
-    icon: MessageCircle,
-    external: true,
-  },
-  {
-    title: 'Kanban / Agent Board',
-    description: 'Open tasks and runs',
-    href: process.env.KANBAN_URL || 'http://localhost:8787',
-    icon: SquareTerminal,
-    external: true,
-  },
-  {
-    title: 'CNS Dashboard',
-    description: 'Local CNS instance',
-    href: process.env.CNS_DASHBOARD_URL || 'http://localhost:3001',
-    icon: Gauge,
+    icon: MessageSquarePlus,
     external: true,
   },
 ]
@@ -52,17 +38,15 @@ async function getStats() {
   today.setHours(0, 0, 0, 0)
 
   try {
-    const [notifications, gardenTasks, agentStatuses] = await Promise.all([
+    const [notifications, gardenTasks, pinnedBriefs] = await Promise.all([
       prisma.notification.count({ where: { isRead: false } }),
       prisma.gardenTask.count({ where: { completed: false, dueDate: { gte: today } } }),
-      getAgentStatuses(),
+      prisma.dailyBrief.count({ where: { isPinned: true } }),
     ])
 
-    const activeAgents = agentStatuses.filter((agent) => agent.health === 'active').length
-
-    return { notifications, gardenTasks, agentStatuses, activeAgents }
+    return { notifications, gardenTasks, pinnedBriefs }
   } catch {
-    return { notifications: 0, gardenTasks: 0, agentStatuses: [], activeAgents: 0 }
+    return { notifications: 0, gardenTasks: 0, pinnedBriefs: 0 }
   }
 }
 
@@ -73,32 +57,8 @@ function getGreeting() {
   return 'Good evening'
 }
 
-function HealthBadge({ health }: { health: AgentHealth }) {
-  if (health === 'active') {
-    return (
-      <span className="badge success">
-        <CheckCircle2 size={12} style={{ marginRight: 4 }} /> Active
-      </span>
-    )
-  }
-
-  if (health === 'idle') {
-    return (
-      <span className="badge warning">
-        <Clock3 size={12} style={{ marginRight: 4 }} /> Idle
-      </span>
-    )
-  }
-
-  return (
-    <span className="badge muted">
-      <CircleOff size={12} style={{ marginRight: 4 }} /> Offline
-    </span>
-  )
-}
-
 export default async function HomePage() {
-  const { notifications, gardenTasks, agentStatuses, activeAgents } = await getStats()
+  const { notifications, gardenTasks, pinnedBriefs } = await getStats()
 
   return (
     <div className="container">
@@ -127,17 +87,17 @@ export default async function HomePage() {
           </div>
           <div className="stat-card">
             <div className="stat-icon secondary">
-              <Bot />
+              <Newspaper />
             </div>
-            <div className="stat-value">{activeAgents}</div>
-            <div className="stat-label">Agents Active (20m)</div>
+            <div className="stat-value">{pinnedBriefs}</div>
+            <div className="stat-label">Pinned Briefs</div>
           </div>
           <div className="stat-card">
             <div className="stat-icon info">
-              <Activity />
+              <Zap />
             </div>
-            <div className="stat-value">{agentStatuses.length}</div>
-            <div className="stat-label">Tracked Agents</div>
+            <div className="stat-value">—</div>
+            <div className="stat-label">Weekly Focus</div>
           </div>
         </div>
       </section>
@@ -159,34 +119,13 @@ export default async function HomePage() {
               <ChevronRight />
             </span>
           </Link>
-          <div className="app-card disabled">
-            <div className="app-icon muted">
-              <Activity />
-            </div>
-            <div className="app-content">
-              <div className="app-title">Analytics</div>
-              <div className="app-description">Coming soon</div>
-            </div>
-          </div>
-          <Link href="/agents" className="app-card">
-            <div className="app-icon secondary">
-              <Radar />
-            </div>
-            <div className="app-content">
-              <div className="app-title">Agent Monitor</div>
-              <div className="app-description">Live status for all orchestration agents</div>
-            </div>
-            <span className="app-arrow">
-              <ChevronRight />
-            </span>
-          </Link>
           <Link href="/brief" className="app-card">
             <div className="app-icon info">
               <Newspaper />
             </div>
             <div className="app-content">
               <div className="app-title">Daily Brief</div>
-              <div className="app-description">One-screen overnight priorities and next actions</div>
+              <div className="app-description">TL;DR plus full briefing archive</div>
             </div>
             <span className="app-arrow">
               <ChevronRight />
@@ -198,7 +137,7 @@ export default async function HomePage() {
             </div>
             <div className="app-content">
               <div className="app-title">Garden Weather</div>
-              <div className="app-description">12-hour weather window with practical gardening guidance</div>
+              <div className="app-description">Practical weather guidance</div>
             </div>
             <span className="app-arrow">
               <ChevronRight />
@@ -210,12 +149,33 @@ export default async function HomePage() {
             </div>
             <div className="app-content">
               <div className="app-title">Quick Capture Inbox</div>
-              <div className="app-description">Turn rough notes into tasks in one tap</div>
+              <div className="app-description">Turn rough notes into tasks</div>
             </div>
             <span className="app-arrow">
               <ChevronRight />
             </span>
           </Link>
+          <a href="http://localhost:3477" target="_blank" rel="noreferrer" className="app-card">
+            <div className="app-icon secondary">
+              <Gauge />
+            </div>
+            <div className="app-content">
+              <div className="app-title">CNS Dashboard</div>
+              <div className="app-description">Open CNS and session controls</div>
+            </div>
+            <span className="app-arrow">
+              <ExternalLink />
+            </span>
+          </a>
+          <div className="app-card disabled">
+            <div className="app-icon muted">
+              <BarChart3 />
+            </div>
+            <div className="app-content">
+              <div className="app-title">Analytics</div>
+              <div className="app-description">Coming soon</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -224,46 +184,18 @@ export default async function HomePage() {
           <div className="col-12 col-lg-6">
             <div className="card h-100">
               <div className="card-header">
-                <h3 className="card-title">Agent Status Monitor</h3>
+                <h3 className="card-title">Recent Notifications</h3>
               </div>
-              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
-                {agentStatuses.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-state-icon">
-                      <Bot />
-                    </div>
-                    <p className="empty-state-text">No agent telemetry yet</p>
+              <div className="card-body">
+                <div className="empty-state">
+                  <div className="empty-state-icon">
+                    <Bell />
                   </div>
-                ) : (
-                  <>
-                    {agentStatuses.map((agent) => (
-                      <div key={agent.name} className="agent-status-item">
-                        <div className="agent-status-main">
-                          <strong className="agent-name">{agent.name}</strong>
-                          {agent.lastSeen ? (
-                            <span className="agent-last-seen">
-                              {formatDistanceToNow(agent.lastSeen, { addSuffix: true })}
-                            </span>
-                          ) : (
-                            <span className="agent-last-seen">no recent events</span>
-                          )}
-                        </div>
-                        <div className="agent-status-side">
-                          <HealthBadge health={agent.health} />
-                        </div>
-                      </div>
-                    ))}
-
-                    <Link href="/agents" className="btn btn-outline" style={{ marginTop: 'var(--space-2)' }}>
-                      <Radar size={16} />
-                      Open full monitor
-                    </Link>
-                  </>
-                )}
+                  <p className="empty-state-text">No notifications yet</p>
+                </div>
               </div>
             </div>
           </div>
-
           <div className="col-12 col-lg-6">
             <div className="card h-100">
               <div className="card-header">
@@ -278,30 +210,27 @@ export default async function HomePage() {
                   <Package />
                   Update Seed Inventory
                 </Link>
-
-                <div className="quick-links-stack">
-                  {QUICK_LINKS.map((link) => {
-                    const Icon = link.icon
-                    return (
-                      <a
-                        key={link.title}
-                        href={link.href}
-                        target={link.external ? '_blank' : undefined}
-                        rel={link.external ? 'noreferrer' : undefined}
-                        className="quick-link-row"
-                      >
-                        <span className="quick-link-main">
-                          <Icon size={16} />
-                          <span>
-                            <span className="quick-link-title">{link.title}</span>
-                            <span className="quick-link-description">{link.description}</span>
-                          </span>
+                {QUICK_LINKS.map((link) => {
+                  const Icon = link.icon
+                  return (
+                    <a
+                      key={link.title}
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noreferrer' : undefined}
+                      className="quick-link-row"
+                    >
+                      <span className="quick-link-main">
+                        <Icon size={16} />
+                        <span>
+                          <span className="quick-link-title">{link.title}</span>
+                          <span className="quick-link-description">{link.description}</span>
                         </span>
-                        <ExternalLink size={15} />
-                      </a>
-                    )
-                  })}
-                </div>
+                      </span>
+                      <ExternalLink size={15} />
+                    </a>
+                  )
+                })}
               </div>
             </div>
           </div>

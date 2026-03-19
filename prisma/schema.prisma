@@ -52,6 +52,19 @@ model Notification {
   createdAt  DateTime @default(now())
 }
 
+/// Stored daily briefing entries with TL;DR + full content
+model DailyBrief {
+  id        String   @id @default(uuid())
+  date      DateTime @unique
+  tldr      String
+  content   String
+  audioUrl  String?
+  isRead    Boolean  @default(false)
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // ============================================================================
 // Gardening App
 // ============================================================================

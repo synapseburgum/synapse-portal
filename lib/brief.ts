@@ -1,170 +1,221 @@
 import { prisma } from '@/lib/db'
-import { getAgentHealthCounts, getAgentStatuses } from '@/lib/agents'
+import { getWeatherSnapshot } from '@/lib/weather'
 
-export type DailyBriefData = {
-  generatedAt: string
-  summary: {
-    unreadNotifications: number
-    dueTodayTasks: number
-    overdueTasks: number
-    offlineAgents: number
-  }
-  attention: {
-    type: 'overdue_tasks' | 'offline_agents' | 'unread_notifications'
-    title: string
-    detail: string
-    href: string
-    severity: 'high' | 'medium'
-  }[]
-  tasks: {
-    id: string
-    title: string
-    dueDate: string
-    recurring: string | null
-  }[]
-  notifications: {
-    id: string
-    type: string
-    title: string
-    message: string
-    source: string | null
-    createdAt: string
-  }[]
-  watchlist: {
-    name: string
-    health: 'active' | 'idle' | 'offline'
-    lastSeen: string | null
-    lastMessage: string | null
-  }[]
+export type DailyBriefRecord = {
+  id: string
+  date: Date
+  tldr: string
+  content: string
+  audioUrl: string | null
+  isRead: boolean
+  isPinned: boolean
+  createdAt: Date
+  updatedAt: Date
 }
 
-export async function getDailyBriefData(): Promise<DailyBriefData> {
-  const now = new Date()
-  const startOfToday = new Date(now)
-  startOfToday.setHours(0, 0, 0, 0)
+function startOfDay(input: Date) {
+  const d = new Date(input)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
 
-  const endOfToday = new Date(startOfToday)
-  endOfToday.setDate(endOfToday.getDate() + 1)
+function endOfDay(input: Date) {
+  const d = startOfDay(input)
+  d.setDate(d.getDate() + 1)
+  return d
+}
+
+function parseDateOrToday(value?: string | null) {
+  if (!value) return startOfDay(new Date())
+  const parsed = new Date(value)
+  if (Number.isNaN(parsed.getTime())) return startOfDay(new Date())
+  return startOfDay(parsed)
+}
+
+export async function buildAutomatedBrief(date: Date) {
+  const dayStart = startOfDay(date)
+  const dayEnd = endOfDay(date)
 
   const [
+    weather,
+    dueToday,
+    overdue,
+    upcomingPlantings,
     unreadNotifications,
-    recentNotifications,
-    dueTodayTasks,
-    overdueTasks,
-    taskList,
-    agentStatuses,
+    unreadCount,
   ] = await Promise.all([
-    prisma.notification.count({ where: { isRead: false } }),
+    getWeatherSnapshot(),
+    prisma.gardenTask.findMany({
+      where: { dueDate: { gte: dayStart, lt: dayEnd }, completed: false },
+      orderBy: { dueDate: 'asc' },
+      take: 8,
+    }),
+    prisma.gardenTask.findMany({
+      where: { dueDate: { lt: dayStart }, completed: false },
+      orderBy: { dueDate: 'asc' },
+      take: 6,
+    }),
+    prisma.gardenPlanting.findMany({
+      where: {
+        OR: [
+          { transplantDate: { gte: dayStart, lt: dayEnd } },
+          { expectedHarvestDate: { gte: dayStart, lt: dayEnd } },
+        ],
+      },
+      include: { plant: true },
+      take: 6,
+    }),
     prisma.notification.findMany({
       where: { isRead: false },
       orderBy: { createdAt: 'desc' },
       take: 6,
-      select: {
-        id: true,
-        type: true,
-        title: true,
-        message: true,
-        source: true,
-        createdAt: true,
-      },
     }),
-    prisma.gardenTask.count({
-      where: {
-        completed: false,
-        dueDate: {
-          gte: startOfToday,
-          lt: endOfToday,
-        },
-      },
-    }),
-    prisma.gardenTask.count({
-      where: {
-        completed: false,
-        dueDate: {
-          lt: startOfToday,
-        },
-      },
-    }),
-    prisma.gardenTask.findMany({
-      where: {
-        completed: false,
-        dueDate: {
-          lte: endOfToday,
-        },
-      },
-      orderBy: [{ dueDate: 'asc' }, { createdAt: 'asc' }],
-      take: 6,
-      select: {
-        id: true,
-        title: true,
-        dueDate: true,
-        recurring: true,
-      },
-    }),
-    getAgentStatuses(),
+    prisma.notification.count({ where: { isRead: false } }),
   ])
 
-  const agentHealth = getAgentHealthCounts(agentStatuses)
+  const tldrParts = [
+    `${dueToday.length} garden tasks due today`,
+    `${overdue.length} overdue tasks`,
+    `${upcomingPlantings.length} planting milestones`,
+    `${unreadCount} unread notifications`,
+  ]
 
-  const attention = [
-    overdueTasks > 0
-      ? {
-          type: 'overdue_tasks' as const,
-          title: `${overdueTasks} overdue garden ${overdueTasks === 1 ? 'task' : 'tasks'}`,
-          detail: 'Clear overdue items first to keep seasonal work on track.',
-          href: '/gardening/tasks',
-          severity: 'high' as const,
-        }
-      : null,
-    agentHealth.offline > 0
-      ? {
-          type: 'offline_agents' as const,
-          title: `${agentHealth.offline} ${agentHealth.offline === 1 ? 'agent is' : 'agents are'} offline`,
-          detail: 'Check the monitor before morning runs and automations.',
-          href: '/agents',
-          severity: 'medium' as const,
-        }
-      : null,
-    unreadNotifications > 0
-      ? {
-          type: 'unread_notifications' as const,
-          title: `${unreadNotifications} unread ${unreadNotifications === 1 ? 'notification' : 'notifications'}`,
-          detail: 'Triage now to avoid losing high-impact updates.',
-          href: '/?panel=notifications',
-          severity: 'medium' as const,
-        }
-      : null,
-  ].filter((item): item is NonNullable<typeof item> => Boolean(item))
+  const weatherLine = weather
+    ? `Weather: ${Math.round(weather.current.temperatureC)}°C, ${weather.current.condition}. ${weather.recommendation.text}`
+    : 'Weather: unavailable right now.'
 
-  const watchlist = agentStatuses
-    .filter((agent) => agent.health !== 'active')
-    .sort((a, b) => {
-      if (a.health === b.health) return a.name.localeCompare(b.name)
-      return a.health === 'offline' ? -1 : 1
-    })
+  const contentLines = [
+    `Daily briefing for ${dayStart.toLocaleDateString()}`,
+    '',
+    'TL;DR',
+    `- ${tldrParts.join(' • ')}`,
+    `- ${weatherLine}`,
+    '',
+    'Top priorities',
+    ...overdue.slice(0, 3).map((task, i) => `${i + 1}. Overdue: ${task.title} (due ${task.dueDate.toLocaleDateString()})`),
+    ...dueToday.slice(0, 3).map((task, i) => `${i + 1 + Math.min(3, overdue.length)}. Due today: ${task.title}`),
+    '',
+    'Upcoming garden milestones',
+    ...(upcomingPlantings.length === 0
+      ? ['- None for today']
+      : upcomingPlantings.map((p) => {
+          const transplant = p.transplantDate ? `transplant ${p.transplantDate.toLocaleDateString()}` : null
+          const harvest = p.expectedHarvestDate ? `harvest ${p.expectedHarvestDate.toLocaleDateString()}` : null
+          return `- ${p.plant.name}: ${[transplant, harvest].filter(Boolean).join(' • ') || 'status check'}`
+        })),
+    '',
+    'Unread notifications',
+    ...(unreadNotifications.length === 0
+      ? ['- No unread notifications']
+      : unreadNotifications.map((n) => `- ${n.title}: ${n.message}`)),
+    '',
+    'Automation notes',
+    '- Morning refresh generated by Synapse Portal',
+    '- Audio brief URL can be attached when Clark publishes the recording',
+  ]
 
   return {
-    generatedAt: now.toISOString(),
-    summary: {
-      unreadNotifications,
-      dueTodayTasks,
-      overdueTasks,
-      offlineAgents: agentHealth.offline,
-    },
-    attention,
-    tasks: taskList.map((task) => ({
-      id: task.id,
-      title: task.title,
-      dueDate: task.dueDate.toISOString(),
-      recurring: task.recurring,
-    })),
-    notifications: recentNotifications.map((notification) => ({
-      ...notification,
-      createdAt: notification.createdAt.toISOString(),
-    })),
-    watchlist: watchlist.map((agent) => ({
-      ...agent,
-      lastSeen: agent.lastSeen ? agent.lastSeen.toISOString() : null,
-    })),
+    tldr: tldrParts.join(' • '),
+    content: contentLines.join('\n'),
+    weatherSummary: weatherLine,
   }
+}
+
+export async function getOrCreateDailyBrief(dateInput?: Date) {
+  const day = startOfDay(dateInput || new Date())
+
+  const existing = await prisma.dailyBrief.findUnique({
+    where: { date: day },
+  })
+
+  if (existing) return existing
+
+  const generated = await buildAutomatedBrief(day)
+
+  return prisma.dailyBrief.create({
+    data: {
+      date: day,
+      tldr: generated.tldr,
+      content: generated.content,
+      audioUrl: null,
+      isRead: false,
+      isPinned: false,
+    },
+  })
+}
+
+export async function getBriefByDate(dateInput?: string | null) {
+  const day = parseDateOrToday(dateInput)
+  let brief = await prisma.dailyBrief.findUnique({ where: { date: day } })
+
+  if (!brief) {
+    brief = await getOrCreateDailyBrief(day)
+  }
+
+  return brief
+}
+
+export async function listBriefArchive(params?: {
+  from?: string | null
+  to?: string | null
+  query?: string | null
+  take?: number
+}) {
+  const from = params?.from ? startOfDay(new Date(params.from)) : undefined
+  const to = params?.to ? endOfDay(new Date(params.to)) : undefined
+  const take = params?.take ?? 60
+  const query = params?.query?.trim()
+
+  return prisma.dailyBrief.findMany({
+    where: {
+      ...(from || to
+        ? {
+            date: {
+              ...(from ? { gte: from } : {}),
+              ...(to ? { lt: to } : {}),
+            },
+          }
+        : {}),
+      ...(query
+        ? {
+            OR: [
+              { tldr: { contains: query } },
+              { content: { contains: query } },
+            ],
+          }
+        : {}),
+    },
+    orderBy: [{ isPinned: 'desc' }, { date: 'desc' }],
+    take,
+  })
+}
+
+export async function searchBriefs(query: string, take = 40) {
+  const q = query.trim()
+  if (!q) return []
+
+  return prisma.dailyBrief.findMany({
+    where: {
+      OR: [
+        { tldr: { contains: q } },
+        { content: { contains: q } },
+      ],
+    },
+    orderBy: [{ isPinned: 'desc' }, { date: 'desc' }],
+    take,
+  })
+}
+
+export async function markBriefRead(id: string, isRead: boolean) {
+  return prisma.dailyBrief.update({
+    where: { id },
+    data: { isRead },
+  })
+}
+
+export async function pinBrief(id: string, isPinned: boolean) {
+  return prisma.dailyBrief.update({
+    where: { id },
+    data: { isPinned },
+  })
 }
