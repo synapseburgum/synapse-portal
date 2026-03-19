@@ -52,6 +52,40 @@
 
 ---
 
+## Overnight Sprint Progress Update — 2026-03-19 02:00 (Europe/London)
+
+### ✅ Shipped in this sprint
+- Implemented a **mobile-first responsive navigation system** across the portal.
+- Added client component: **`components/MobileNav.tsx`**.
+- Updated **`app/layout.tsx`** to use `Link` + `MobileNav` with route-aware active states.
+- Updated **`app/globals.css`** to improve small-screen nav ergonomics:
+  - compact brand sizing on mobile,
+  - proper touch-friendly menu toggle,
+  - full-width menu links,
+  - slide-down nav panel behavior retained.
+
+### Why this was selected
+- Most useful immediate improvement for Tim was reducing friction on phone usage.
+- Existing nav had mobile styles but no functional toggle wiring, so routes like `/agents` were less accessible on small screens.
+- This improves access to key daily surfaces (Dashboard, Gardening, Agents) in one-thumb usage.
+
+### Mobile-first behavior delivered
+- Hamburger menu now opens/closes reliably on screens ≤768px.
+- Menu closes automatically after navigation.
+- Current section is highlighted (Dashboard / Gardening / Agents).
+- Touch targets and spacing are preserved for quick overnight checks from mobile.
+
+### Validation completed
+- `npm run build` passed after changes.
+- Route smoke tests passed on dev server (`/`, `/agents`, `/gardening`).
+- Verified page HTML includes mobile menu affordance (`Open navigation menu`) and new Agent Monitor copy.
+
+### Notes
+- Browser automation remained unavailable due gateway timeout, so testing was done via Next build + HTTP smoke checks.
+- No betting/gambling/Racer functionality introduced.
+
+---
+
 ## 1) Current State Snapshot
 
 ### What already exists

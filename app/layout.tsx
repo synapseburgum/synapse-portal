@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import './globals.css'
+import MobileNav from '@/components/MobileNav'
 
 export const metadata: Metadata = {
   title: 'Synapse Portal',
@@ -16,7 +18,7 @@ export default function RootLayout({
       <body>
         <nav className="navbar">
           <div className="navbar-inner">
-            <a href="/" className="navbar-brand">
+            <Link href="/" className="navbar-brand">
               <span className="navbar-brand-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2a10 10 0 1 0 10 10" />
@@ -26,47 +28,8 @@ export default function RootLayout({
                 </svg>
               </span>
               Synapse
-            </a>
-            <ul className="navbar-nav">
-              <li>
-                <a href="/" className="nav-link">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="7" height="9" rx="1" />
-                    <rect x="14" y="3" width="7" height="5" rx="1" />
-                    <rect x="14" y="12" width="7" height="9" rx="1" />
-                    <rect x="3" y="16" width="7" height="5" rx="1" />
-                  </svg>
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="/gardening" className="nav-link">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 10V2" />
-                    <path d="M12 10c-4 0-6 3-6 6 0 4 3 6 6 6s6-2 6-6c0-3-2-6-6-6z" />
-                    <path d="M12 22v-6" />
-                    <path d="M8 12h8" />
-                  </svg>
-                  Gardening
-                </a>
-              </li>
-              <li>
-                <a href="/agents" className="nav-link">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2v4" />
-                    <path d="M12 18v4" />
-                    <path d="M4.93 4.93l2.83 2.83" />
-                    <path d="M16.24 16.24l2.83 2.83" />
-                    <path d="M2 12h4" />
-                    <path d="M18 12h4" />
-                    <path d="M4.93 19.07l2.83-2.83" />
-                    <path d="M16.24 7.76l2.83-2.83" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                  Agents
-                </a>
-              </li>
-            </ul>
+            </Link>
+            <MobileNav />
           </div>
         </nav>
         <main className="py-4">
